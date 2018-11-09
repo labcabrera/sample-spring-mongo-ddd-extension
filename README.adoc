@@ -125,6 +125,12 @@ En este ejemplo también utilizaremos https://spring.io/projects/spring-hateoas[
 la exposición de nuestra API para acercarnos lo más posible al
 https://martinfowler.com/articles/richardsonMaturityModel.html[_Glory of Rest_].
 
-== Swagger
+== Swagger 2
 
-TODO...
+Para la generación de la documentación de nuestra API utilizaremos la librería
+http://springfox.github.io/springfox/[SpringFox] que se integra fácilmente con Spring como podría
+uno pensar mirando solamente el nombre.
+
+Únicamente tendremos que definir un bean de tipo _Docket_ donde definiremos las propiedades de
+generación de la documentación. Después simplemente accederemos al recurso _/swagger-ui.html_ de
+cada servicio para acceder al explorador de Swagger.
