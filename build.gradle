@@ -105,11 +105,19 @@ project(":commons-security") {
 
 
 project(":app-model") {
+	apply plugin: "com.ewerk.gradle.plugins.querydsl"
 	dependencies {
-		implementation(project(':commons-model')) { transitive = false }
+		compile(project(':commons-model')) { transitive = false }
 		testCompile(project(':commons-data'))
-		testCompile('org.springframework.boot:spring-boot-starter-data-mongodb')
-		testCompile('org.springframework.boot:spring-boot-starter-security')
+		testCompile(project(':commons-service'))
+		// TODO errores plugin querydsl en el scope
+		compile('org.springframework.boot:spring-boot-starter-data-mongodb')
+		compile('org.springframework.boot:spring-boot-starter-security')
+	}
+	querydsl {
+		//querydslDefault = true
+		springDataMongo = true
+		aptOptions = ['querydsl.entityAccessors=true','querydsl.useFields=false']
 	}
 }
 

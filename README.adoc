@@ -1,0 +1,90 @@
+= Extendiendo un modelo común de MongoDB con Spring Data
+
+:baseLink: https://github.com/labcabrera/sample-spring-mongo-ddd-extension
+:amp: *
+
+== Introducción
+
+Este ejemplo tiene por objetivo mostrar un ejemplo en el que varios microservicios extienden de un
+modelo común, reutilizando varios componentes (acceso a datos, seguridad, etc) definidos a nivel del
+modelo general.
+
+Este escenario se daría cuando por ejemplo tenemos una familia de aplicaciones que utilizan una
+estructura similar de entidades (contratos, entidades legales, etc), en las que cada una de ella
+requiere ciertas modificaciones para ajustarse a cada negocio específico. Esta filosofía de DDD
+no suele llevarse demasiado bien con el paradigma de los microservicios, donde cada uno de ellos
+debería reducir su ámbito del modelo a un subconjunto limitado de entidades. Pero en la práctica,
+cuando trabajamos con modelos complejos suele ser recomendable extender de una definición común para
+evitar que cada módulo tenga que definir toda su estructura, algo que también complica bastante las
+actualizaciones del modelo canónico, ya que cualquier cambio deberá ser ajustado en cada uno de los
+microservicios.
+
+En nuestro caso trabajaremos con un modelo muy pequeño: contratos, clientes y las relaciones entre
+ellos. Después tendremos una aplicación que deberá extender este modelo para incluir campos
+específicos.
+
+== Tecnologías
+
+* Spring Boot 2
+* Spring Data Mongo
+* QueryDsl
+* Swagger
+* JWT
+
+== Definicion del modelo
+
+La definición del modelo está en el proyecto {baseLink}/https://github.com/labcabrera/sample-spring-mongo-ddd-extension/tree/master/commons-model/[commons-model].
+
+En nuestro ejemplo sólamente tenemos las anotaciones de MongoDB, aunque este debería ser agnóstico
+al modelo de persistencia y en determinados casos podríamos tener también anotaciones de JPA, algo
+que para evitar complicar el código no he incluido.
+
+== Repositorios
+
+Los repositorios están definidos en el proyecto
+{baseLink}/https://github.com/labcabrera/sample-spring-mongo-ddd-extension/tree/master/commons-data/[commons-data].
+
+Nuestros repositorios de entidades extenderán tanto de _PagingAndSortingRepository_ como de
+_QuerydslPredicateExecutor_ por la misma razón que antes: queremos que sean independientes de
+nuestra implementación. Por ello evitamos extender directamente de _MongoRepository_.
+
+== Modelo de seguridad en la lectura de recursos
+
+En nuestro ejemplo todas las entidades tendrán unas determinadas restricciones de acceso. Esto lo
+implementamos a nivel de la siguiente interface:
+
+[source,java]
+----
+public interface HasAuthorization {
+
+  String ROOT = "root";
+
+  List<String> getAuthorization();
+
+  void setAuthorization(List<String> permissions);
+
+}
+----
+
+La principal razón de hacerlo de este modo es desacoplar la lógica de negocio específica a la hora
+de realizar las consultas a nivel de cada entidad. Esto nos permite en función de las
+__granted authorities__ obtenidas del contexto de seguridad incluir un sistema homogéneo para todas
+las entidades a través de un _Predicate_ de QueryDsl.
+
+Esto lo realizamos a través de la clase
+{baseLink}/blob/master/commons-service/src/main/java/org/labcabrera/samples/mongo/ddd/commons/service/AbstractSecurityService.java/[AbstractSecurityService]
+que es la que utilizaremos para las APIs de lectura de recursos.
+
+== APIs REST comunes
+
+En el proyecto {baseLink}/tree/master/commons-api [commons-api] hemos definido los componentes
+comunes a los diferentes microservicios, así como las interfaces generales de lectura.
+
+== Utilizando JWT para la securización de nuesta APIs
+
+JWT está consolidado como uno de los principales mecanismos de seguridad para APIs REST y permite
+de un modo sencillo definir la estructura de permisos que utilizaremos internamente para filtrar las
+entidades accesibles.
+
+
+TODO...
