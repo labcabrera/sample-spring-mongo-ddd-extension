@@ -119,6 +119,7 @@ project(":app-api") {
 		implementation(project(':commons-model')) { transitive = false }
 		implementation(project(':commons-api'))
 		implementation(project(':commons-service'))
+		implementation(project(':commons-security'))
 		implementation(project(':app-model'))
 		implementation('org.springframework.boot:spring-boot-starter-web')
 		implementation('org.springframework.boot:spring-boot-starter-data-mongodb')

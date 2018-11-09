@@ -1,0 +1,46 @@
+spring:
+  profiles:
+    active: actuator
+  application:
+    name: app-api
+  data:
+    mongodb:
+      uri: mongodb://${APP_MONGO_HOST:localhost}:${APP_MONGO_PORT:27017}/referential
+logging:
+  level:
+    root: INFO
+    org.labcabrera: DEBUG
+
+server:
+  port: ${APP_SERVER_PORT:8080}
+
+app:
+  security:
+    jwt:
+      secret: ${APP_JWT_SECRET:changeit}
+      expiration: 18000
+    authorization:
+      path: /auth
+    unsecured:
+      paths: '/,/swagger-ui.html,/v2/api-docs,/swagger-resources/**,/webjars/**'
+  api:
+    swagger:
+      base-package: org.labcabrera.samples.mongo.ddd.app.api.controller
+      doc:
+        title: Sample Sping Mongo DDD extension
+        description: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        version: v1
+        contact:
+          name: Luis Cabrera
+          url: https://github.com/labcabrera/sample-spring-mongo-ddd-extension
+          email: lab.cabrera@gmail.com
+
+--- # Enables Spring Boot actuator
+
+spring:
+  profiles: actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

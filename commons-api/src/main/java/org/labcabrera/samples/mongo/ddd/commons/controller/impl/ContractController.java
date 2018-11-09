@@ -2,14 +2,15 @@ package org.labcabrera.samples.mongo.ddd.commons.controller.impl;
 
 import java.util.Optional;
 
+import org.labcabrera.samples.mongo.ddd.commons.api.errors.EntityNotFoundException;
 import org.labcabrera.samples.mongo.ddd.commons.api.predicate.PredicateParser;
-import org.labcabrera.samples.mongo.ddd.commons.api.predicate.exception.EntityNotFoundException;
 import org.labcabrera.samples.mongo.ddd.commons.api.resources.ContractAssembler;
 import org.labcabrera.samples.mongo.ddd.commons.api.resources.ContractResource;
 import org.labcabrera.samples.mongo.ddd.commons.controller.ContractControllerDefinition;
 import org.labcabrera.samples.mongo.ddd.commons.data.ContractRepository;
 import org.labcabrera.samples.mongo.ddd.commons.model.Contract;
 import org.labcabrera.samples.mongo.ddd.commons.service.ContractService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,16 +23,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.querydsl.core.types.Predicate;
 
-import lombok.AllArgsConstructor;
 import springfox.documentation.annotations.ApiIgnore;
 
-@AllArgsConstructor
 public class ContractController implements ContractControllerDefinition {
 
-	private final ContractService contractService;
-	private final PagedResourcesAssembler<Contract> contractPagedAssembler;
-	private final ContractAssembler contractAssembler;
-	private final PredicateParser predicateParser;
+	@Autowired
+	private ContractService contractService;
+
+	@Autowired
+	private PagedResourcesAssembler<Contract> contractPagedAssembler;
+
+	@Autowired
+	private ContractAssembler contractAssembler;
+
+	@Autowired
+	private PredicateParser predicateParser;
 
 	@Override
 	public ResponseEntity<ContractResource> findById(@PathVariable String id) {

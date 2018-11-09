@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.labcabrera.samples.mongo.ddd.commons.security.JwtAutoconfiguration

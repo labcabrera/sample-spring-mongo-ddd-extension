@@ -33,7 +33,7 @@ public class SwaggerConfig {
 		//@formatter:off
 		return new Docket(DocumentationType.SWAGGER_2) 
 			.select()
-			.apis(RequestHandlerSelectors.basePackage("org.labcabrera.samples.mongo.ddd.commons.api"))
+			.apis(RequestHandlerSelectors.basePackage(env.getProperty("app.api.swagger.base-package")))
 			.paths(PathSelectors.any())
 			.build()
 			.apiInfo(apiInfo())

@@ -5,7 +5,7 @@ import java.net.URLDecoder;
 import java.util.Map;
 import java.util.Optional;
 
-import org.labcabrera.samples.mongo.ddd.commons.api.predicate.exception.PredicateParseException;
+import org.labcabrera.samples.mongo.ddd.commons.api.errors.PredicateParseException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 

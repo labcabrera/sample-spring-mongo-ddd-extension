@@ -1,4 +1,4 @@
-package org.labcabrera.samples.mongo.ddd.commons.api.predicate.exception;
+package org.labcabrera.samples.mongo.ddd.commons.api.errors;
 
 /**
  * Entidad equivalente a <code>javax.persistence.EntityNotFoundException</code> comun para aquellos proyectos que no

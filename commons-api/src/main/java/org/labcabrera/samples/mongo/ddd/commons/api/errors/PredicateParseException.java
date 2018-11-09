@@ -1,4 +1,4 @@
-package org.labcabrera.samples.mongo.ddd.commons.api.predicate.exception;
+package org.labcabrera.samples.mongo.ddd.commons.api.errors;
 
 import lombok.Getter;
 
