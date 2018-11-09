@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -18,6 +19,8 @@ public class QContract extends EntityPathBase<Contract> {
     private static final long serialVersionUID = 307920369L;
 
     public static final QContract contract = new QContract("contract");
+
+    public final ListPath<String, StringPath> authorization = this.<String, StringPath>createList("authorization", String.class, StringPath.class, PathInits.DIRECT2);
 
     public final StringPath contractNumber = createString("contractNumber");
 

@@ -1,0 +1,132 @@
+[
+	{
+		"name": "Franz",
+		"surname": "Kafka",
+		"birthDate": "1980-01-01",
+		"idCard": {
+			"number": "1000001A"
+		},
+		"authorization": [
+			"demo1"
+		]
+	},
+	{
+		"name": "Milan",
+		"surname": "Kundera",
+		"birthDate": "1980-02-02",
+		"idCard": {
+			"number": "1000002B"
+		},
+		"authorization": [
+			"demo1"
+		]
+	},
+	{
+		"name": "Hermann",
+		"surname": "Hesse",
+		"birthDate": "1980-03-03",
+		"idCard": {
+			"number": "1000003C"
+		},
+		"authorization": [
+			"demo1"
+		]
+	},
+	{
+		"name": "Haruki",
+		"surname": "Murakami",
+		"birthDate": "1980-04-04",
+		"idCard": {
+			"number": "1000004C"
+		},
+		"authorization": [
+			"demo1"
+		]
+	},
+	{
+		"name": "Michel",
+		"surname": "Houellebecq",
+		"birthDate": "1980-05-05",
+		"idCard": {
+			"number": "1000005C"
+		},
+		"authorization": [
+			"demo1"
+		]
+	},
+	{
+		"name": "Charles",
+		"surname": "Bukowski",
+		"birthDate": "1980-06-06",
+		"idCard": {
+			"number": "1000006C"
+		},
+		"authorization": [
+			"demo1"
+		]
+	},
+	{
+		"name": "Mario",
+		"surname": "Benedetti",
+		"birthDate": "1980-07-07",
+		"idCard": {
+			"number": "1000007C"
+		}
+	},
+	{
+		"name": "Paul",
+		"surname": "Auster",
+		"birthDate": "1980-08-08",
+		"idCard": {
+			"number": "1000008C"
+		},
+		"authorization": [
+			"demo1"
+		]
+	},
+	{
+		"name": "Charles",
+		"surname": "Baudelaire",
+		"birthDate": "1980-09-09",
+		"idCard": {
+			"number": "1000009C"
+		},
+		"authorization": [
+			"demo1"
+		]
+	},
+	{
+		"name": "James",
+		"surname": "Joyce",
+		"birthDate": "1980-10-10",
+		"idCard": {
+			"number": "1000010C"
+		},
+		"authorization": [
+			"demo1"
+		]
+	},
+	{
+		"name": "George",
+		"surname": "Orwell",
+		"birthDate": "1980-11-11",
+		"idCard": {
+			"number": "1000011C"
+		},
+		"authorization": [
+			"demo2"
+		]
+	},
+	{
+		"name": "Heinrich",
+		"surname": "Böll",
+		"birthDate": "1980-12-12",
+		"idCard": {
+			"number": "1000012C"
+		},
+		"authorization": [
+			"demo1",
+			"demo2"
+		]
+	}
+]

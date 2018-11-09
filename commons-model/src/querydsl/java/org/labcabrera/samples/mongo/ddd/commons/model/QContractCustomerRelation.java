@@ -22,6 +22,8 @@ public class QContractCustomerRelation extends EntityPathBase<ContractCustomerRe
 
     public static final QContractCustomerRelation contractCustomerRelation = new QContractCustomerRelation("contractCustomerRelation");
 
+    public final ListPath<String, StringPath> authorization = this.<String, StringPath>createList("authorization", String.class, StringPath.class, PathInits.DIRECT2);
+
     public final QContract contract;
 
     public final QCustomer customer;

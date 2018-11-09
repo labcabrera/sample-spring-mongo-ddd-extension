@@ -1,9 +1,11 @@
 package org.labcabrera.samples.mongo.ddd.commons.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import org.labcabrera.samples.mongo.ddd.commons.model.security.HasAuthorization;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,7 +15,7 @@ import lombok.Setter;
 @Document(collection = "contracts")
 @Getter
 @Setter
-public class Contract {
+public class Contract implements HasAuthorization {
 
 	@Id
 	private String id;
@@ -24,5 +26,6 @@ public class Contract {
 	@NotNull
 	private LocalDate effective;
 
+	private List<String> authorization;
 
 }

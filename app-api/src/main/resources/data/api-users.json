@@ -5,7 +5,7 @@
 		"email": "lab.cabrera@gmail.com",
 		"activation": "2018-01-01T00:00:00.000",
 		"roles": [
-			"ROOT"
+			"root"
 		]
 	},
 	{
@@ -14,16 +14,16 @@
 		"email": "demo1@dummy.org",
 		"activation": "2018-01-01T00:00:00.000",
 		"roles": [
-			"DEMO1"
+			"demo1"
 		]
 	},
 	{
 		"username": "demo2",
 		"password": "demo2",
-		"email": "demo1@dummy.org",
+		"email": "demo2@dummy.org",
 		"activation": "2018-01-01T00:00:00.000",
 		"roles": [
-			"DEMO2"
+			"demo2"
 		]
 	}
 ]

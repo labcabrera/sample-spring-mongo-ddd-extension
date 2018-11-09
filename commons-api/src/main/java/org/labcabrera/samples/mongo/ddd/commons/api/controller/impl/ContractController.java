@@ -46,7 +46,8 @@ public class ContractController implements ContractControllerDefinition {
 	}
 
 	@Override
-	public ResponseEntity<PagedResources<ContractResource>> find(@RequestParam(name="search", required=false) String search,
+	public ResponseEntity<PagedResources<ContractResource>> find(
+		@RequestParam(name = "search", required = false, defaultValue = "") String search,
 		@ApiIgnore Pageable pageable) {
 		pageable = pageable != null ? pageable : PageRequest.of(0, 10, new Sort(Sort.Direction.ASC, "id"));
 		Optional<Predicate> predicate = predicateParser.buildPredicate(search, ContractRepository.PATH_MAP);
