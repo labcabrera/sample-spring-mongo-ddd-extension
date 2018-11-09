@@ -42,7 +42,7 @@ que para evitar complicar el código no he incluido.
 == Repositorios
 
 Los repositorios están definidos en el proyecto
-{baseLink}/https://github.com/labcabrera/sample-spring-mongo-ddd-extension/tree/master/commons-data/[commons-data].
+{baseLink}/tree/master/commons-data/[commons-data].
 
 Nuestros repositorios de entidades extenderán tanto de _PagingAndSortingRepository_ como de
 _QuerydslPredicateExecutor_ por la misma razón que antes: queremos que sean independientes de
@@ -86,5 +86,21 @@ JWT está consolidado como uno de los principales mecanismos de seguridad para A
 de un modo sencillo definir la estructura de permisos que utilizaremos internamente para filtrar las
 entidades accesibles.
 
+== RSQL
+
+A la hora de proveer los parámetros de consulta deseamos que nuestra API sea lo más homogénea
+posible, evitando que cada _controller_ defina una serie arbitraria de _@RequestParam_ para filtrar
+los resultados. Para ello todas las operaciones de consulta simplemente definirán un único parámetros
+de búsqueda llamado _search_ que será una expresión RSQL que posteriormente transformaremos a un
+objeto _Predicate_ de QueryDdl.
+
+[source,java]
+----
+  @GetMapping
+  // other annotations here
+  ResponseEntity<PagedResources<CustomerResource>> find( 
+    @RequestParam(value = "search", required = false, defaultValue = "") String search,
+    Pageable pageable);
+----
 
 TODO...
