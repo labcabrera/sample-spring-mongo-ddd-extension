@@ -30,6 +30,7 @@ específicos.
 * QueryDsl
 * Swagger
 * JWT
+* HATEOAS
 
 == Definicion del modelo
 
@@ -86,6 +87,21 @@ JWT está consolidado como uno de los principales mecanismos de seguridad para A
 de un modo sencillo definir la estructura de permisos que utilizaremos internamente para filtrar las
 entidades accesibles.
 
+Para obtener el token en nuestra aplicación de ejemplo simplemente deberemos enviar una petición
+POST con autenticación básica:
+
+----
+curl -X POST -u demo1:demo1 http://localhost:8080/auth -v
+----
+
+Esto nos devolverá un token JWT como una de las cabeceras de respuesta:
+
+----
+< HTTP/1.1 200 
+< Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE1NDE3ODI...
+...
+----
+
 == RSQL
 
 A la hora de proveer los parámetros de consulta deseamos que nuestra API sea lo más homogénea
@@ -102,5 +118,13 @@ objeto _Predicate_ de QueryDdl.
     @RequestParam(value = "search", required = false, defaultValue = "") String search,
     Pageable pageable);
 ----
+
+== HATEOAS
+
+En este ejemplo también utilizaremos https://spring.io/projects/spring-hateoas[Spring-HATEOAS] para
+la exposición de nuestra API para acercarnos lo más posible al
+https://martinfowler.com/articles/richardsonMaturityModel.html[_Glory of Rest_].
+
+== Swagger
 
 TODO...
