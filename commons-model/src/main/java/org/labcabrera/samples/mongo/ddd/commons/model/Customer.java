@@ -11,10 +11,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Document(collection = "customers")
 @Getter
 @Setter
+@ToString
 public class Customer implements HasAuthorization {
 
 	@Id
