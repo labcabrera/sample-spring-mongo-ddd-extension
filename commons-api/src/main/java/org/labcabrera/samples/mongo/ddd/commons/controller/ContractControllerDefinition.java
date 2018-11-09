@@ -26,16 +26,16 @@ public interface ContractControllerDefinition { //@formatter:off
 
 	@GetMapping("/{id}")
 	@ApiOperation(
-		value = "Policy search by id",
+		value = "Contract search by id",
 		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	ResponseEntity<ContractResource> findById(
 		@ApiParam(name = "id", value = "Policy identifier", required = true)
 		@PathVariable(value = "id", required = true)
-		Long id);
+		String id);
 
 	@GetMapping
 	@ApiOperation(
-		value = "Policy search",
+		value = "Contract search",
 		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "page", value = "Page number", required = false, dataType = "string", paramType = "query", defaultValue = "0"),
@@ -47,16 +47,16 @@ public interface ContractControllerDefinition { //@formatter:off
 
 	@GetMapping("/{id}/relations")
 	@ApiOperation(
-		value = "Search person relations from a given policy",
+		value = "Search person relations from a given contract",
 		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "page", value = "Page number", required = false, dataType = "string", paramType = "query", defaultValue = "0"),
 		@ApiImplicitParam(name = "size", value = "Page size", required = false, dataType = "string", paramType = "query", defaultValue = "10"),
 		@ApiImplicitParam(name = "sort", value = "Sort expression", required = false, dataType = "string", paramType = "query", example = "name,asc") })
-	ResponseEntity<PagedResources<ContractResource>> findPolicyRelations( //@formatter:off
+	ResponseEntity<PagedResources<ContractResource>> findContractRelations(
 		@ApiParam(value = "Policy identifier", required = true)
 		@PathVariable(value = "id", required = true)
-		Long policyId,
+		String policyId,
 		
 		@ApiIgnore
 		Pageable pageable);

@@ -65,7 +65,6 @@ project(":commons-model") {
 	}
 	querydsl {
 		querydslDefault = true
-		//jpa = true
 		springDataMongo = true
 	}
 }
@@ -88,10 +87,11 @@ project(":commons-service") {
 project(":commons-api") {
 	dependencies {
 		implementation(project(':commons-model')) { transitive = false }
-		implementation(project(':commons-data'))
+		implementation(project(':commons-service'))
 		//implementation('org.springframework.boot:spring-boot-starter-security')
 		implementation('org.springframework.boot:spring-boot-starter-hateoas')
 		implementation('org.springframework.boot:spring-boot-starter-web')
+		implementation("com.github.vineey:rsql-querydsl-all:${rsqlQuerydslVersion}")
 		implementation("io.springfox:springfox-swagger2:${springfoxSwaggerVersion}")
 		implementation("io.springfox:springfox-swagger-ui:${springfoxSwaggerVersion}")
 	}
@@ -117,9 +117,8 @@ project(":app-api") {
 	apply plugin: 'com.palantir.docker'
 	dependencies {
 		implementation(project(':commons-model')) { transitive = false }
-		implementation(project(':commons-data')) { transitive = false }
-		implementation(project(':commons-api')) { transitive = false }
-		implementation(project(':commons-service')) { transitive = false }
+		implementation(project(':commons-api'))
+		implementation(project(':commons-service'))
 		implementation(project(':app-model'))
 		implementation('org.springframework.boot:spring-boot-starter-web')
 		implementation('org.springframework.boot:spring-boot-starter-data-mongodb')
