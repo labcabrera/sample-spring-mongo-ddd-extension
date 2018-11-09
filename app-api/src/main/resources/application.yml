@@ -5,7 +5,7 @@ spring:
     name: app-api
   data:
     mongodb:
-      uri: mongodb://${APP_MONGO_HOST:localhost}:${APP_MONGO_PORT:27017}/referential
+      uri: mongodb://${APP_MONGO_HOST:localhost}:${APP_MONGO_PORT:27017}/sample
 logging:
   level:
     root: INFO
@@ -22,7 +22,7 @@ app:
     authorization:
       path: /auth
     unsecured:
-      paths: '/,/swagger-ui.html,/v2/api-docs,/swagger-resources/**,/webjars/**'
+      paths: '/,/swagger-ui.html,/v2/api-docs,/swagger-resources/**,/webjars/**,/actuator/**'
   api:
     swagger:
       base-package: org.labcabrera.samples.mongo.ddd.app.api.controller

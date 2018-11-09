@@ -1,12 +1,12 @@
-package org.labcabrera.samples.mongo.ddd.commons.controller.impl;
+package org.labcabrera.samples.mongo.ddd.commons.api.controller.impl;
 
 import java.util.Optional;
 
+import org.labcabrera.samples.mongo.ddd.commons.api.controller.ContractControllerDefinition;
 import org.labcabrera.samples.mongo.ddd.commons.api.errors.EntityNotFoundException;
+import org.labcabrera.samples.mongo.ddd.commons.api.hateoas.assemblers.ContractAssembler;
+import org.labcabrera.samples.mongo.ddd.commons.api.hateoas.resources.ContractResource;
 import org.labcabrera.samples.mongo.ddd.commons.api.predicate.PredicateParser;
-import org.labcabrera.samples.mongo.ddd.commons.api.resources.ContractAssembler;
-import org.labcabrera.samples.mongo.ddd.commons.api.resources.ContractResource;
-import org.labcabrera.samples.mongo.ddd.commons.controller.ContractControllerDefinition;
 import org.labcabrera.samples.mongo.ddd.commons.data.ContractRepository;
 import org.labcabrera.samples.mongo.ddd.commons.model.Contract;
 import org.labcabrera.samples.mongo.ddd.commons.service.ContractService;
@@ -46,7 +46,7 @@ public class ContractController implements ContractControllerDefinition {
 	}
 
 	@Override
-	public ResponseEntity<PagedResources<ContractResource>> find(@RequestParam String search,
+	public ResponseEntity<PagedResources<ContractResource>> find(@RequestParam(name="search", required=false) String search,
 		@ApiIgnore Pageable pageable) {
 		pageable = pageable != null ? pageable : PageRequest.of(0, 10, new Sort(Sort.Direction.ASC, "id"));
 		Optional<Predicate> predicate = predicateParser.buildPredicate(search, ContractRepository.PATH_MAP);

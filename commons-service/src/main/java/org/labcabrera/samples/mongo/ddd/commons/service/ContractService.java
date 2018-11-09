@@ -7,9 +7,11 @@ import org.labcabrera.samples.mongo.ddd.commons.model.Contract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import com.querydsl.core.types.Predicate;
 
+@Service
 public class ContractService {
 
 	@Autowired

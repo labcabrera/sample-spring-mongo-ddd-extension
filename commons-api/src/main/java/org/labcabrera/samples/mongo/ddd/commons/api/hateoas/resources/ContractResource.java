@@ -1,9 +1,9 @@
-package org.labcabrera.samples.mongo.ddd.commons.api.resources;
+package org.labcabrera.samples.mongo.ddd.commons.api.hateoas.resources;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
-import org.labcabrera.samples.mongo.ddd.commons.controller.ContractControllerDefinition;
+import org.labcabrera.samples.mongo.ddd.commons.api.controller.ContractControllerDefinition;
 import org.labcabrera.samples.mongo.ddd.commons.model.Contract;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.core.Relation;

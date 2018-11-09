@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.labcabrera.samples.mongo.ddd.commons.api.errors.PredicateParseException;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import com.github.vineey.rql.filter.FilterContext;
@@ -16,7 +15,6 @@ import com.github.vineey.rql.querydsl.filter.QuerydslFilterParam;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.Predicate;
 
-@Component
 public class PredicateParser {
 
 	@SuppressWarnings("rawtypes")

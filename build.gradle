@@ -58,7 +58,7 @@ project(":commons-model") {
 	dependencies {
 		compile('org.springframework.boot:spring-boot-starter-validation')
 		compile('org.springframework.boot:spring-boot-starter-data-mongodb')
-		//compile('org.springframework.boot:spring-boot-starter-security')
+		compile('org.springframework.boot:spring-boot-starter-security')
 		//compile('org.apache.commons:commons-lang3')
 		//compile('com.fasterxml.jackson.core:jackson-databind')
 		//compile("io.swagger:swagger-annotations:${swaggerAnnotationsVersion}")

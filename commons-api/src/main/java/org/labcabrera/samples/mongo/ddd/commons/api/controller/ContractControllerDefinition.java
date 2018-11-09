@@ -1,7 +1,7 @@
-package org.labcabrera.samples.mongo.ddd.commons.controller;
+package org.labcabrera.samples.mongo.ddd.commons.api.controller;
 
 import org.labcabrera.samples.mongo.ddd.commons.api.SwaggerConfig;
-import org.labcabrera.samples.mongo.ddd.commons.api.resources.ContractResource;
+import org.labcabrera.samples.mongo.ddd.commons.api.hateoas.resources.ContractResource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.http.ResponseEntity;
