@@ -1,0 +1,159 @@
+buildscript {
+	ext {
+		springBootVersion            = '2.1.0.RELEASE'
+		springfoxSwaggerVersion      = '2.9.2'
+		swaggerAnnotationsVersion    = '1.5.21'
+		jsonwebtokenVersion          = '0.9.1'
+		rsqlQuerydslVersion          = '2.0.0.RELEASE'
+		// Plugins
+		palantirPluginVersion        = '0.20.1'
+		querydslPluginVersion        = '1.0.10'
+	}
+	repositories {
+		mavenCentral()
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath("gradle.plugin.com.palantir.gradle.docker:gradle-docker:${palantirPluginVersion}")
+		classpath("gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:${querydslPluginVersion}")
+	}
+}
+
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'eclipse'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+	apply plugin: 'maven-publish'
+	
+	group = 'org.labcabrera.samples.mongo.ddd'
+	version = version
+	sourceCompatibility = 1.8
+
+	repositories {
+		mavenLocal()
+		mavenCentral()
+	}
+	
+	// TODO eliminar estas dependencias del resto de proyectos. Pendiente de revisar el problema del
+	// scope con el plugin de querydsl y lombok
+	dependencies {
+		compile('org.springframework.data:spring-data-commons')
+		compile('com.querydsl:querydsl-mongodb')
+		compile('org.projectlombok:lombok')
+		testCompile('org.springframework.boot:spring-boot-starter-test')
+	}
+}
+
+/*
+ * NOTA: por el plugin de querydsl hay que establecer el scope compile en las dependencias, que esta
+ * deprecado y ademas obliga a tener a este nivel la de lombok por ejemplo que deberia tener solo
+ * scope de compilacion para que no se incluya en el runtime. Revisar funcionamiento del plugin.
+ */
+project(":commons-model") {
+	apply plugin: "com.ewerk.gradle.plugins.querydsl"
+	dependencies {
+		compile('org.springframework.boot:spring-boot-starter-validation')
+		compile('org.springframework.boot:spring-boot-starter-data-mongodb')
+		//compile('org.springframework.boot:spring-boot-starter-security')
+		//compile('org.apache.commons:commons-lang3')
+		//compile('com.fasterxml.jackson.core:jackson-databind')
+		//compile("io.swagger:swagger-annotations:${swaggerAnnotationsVersion}")
+	}
+	querydsl {
+		querydslDefault = true
+		//jpa = true
+		springDataMongo = true
+	}
+}
+
+project(":commons-data") {
+	dependencies {
+		implementation(project(':commons-model')) { transitive = false }
+		implementation('org.springframework.boot:spring-boot-starter')
+	}
+}
+
+project(":commons-service") {
+	dependencies {
+		implementation(project(':commons-model')) { transitive = false }
+		implementation(project(':commons-data'))
+		implementation('org.springframework.boot:spring-boot-starter-security')
+	}
+}
+
+project(":commons-api") {
+	dependencies {
+		implementation(project(':commons-model')) { transitive = false }
+		implementation(project(':commons-data'))
+		//implementation('org.springframework.boot:spring-boot-starter-security')
+		implementation('org.springframework.boot:spring-boot-starter-hateoas')
+		implementation('org.springframework.boot:spring-boot-starter-web')
+		implementation("io.springfox:springfox-swagger2:${springfoxSwaggerVersion}")
+		implementation("io.springfox:springfox-swagger-ui:${springfoxSwaggerVersion}")
+	}
+}
+
+project(":commons-security") {
+	dependencies {
+		implementation(project(':commons-data'))
+		implementation('org.springframework.boot:spring-boot-starter-security')
+		implementation('org.springframework.boot:spring-boot-starter-web')
+		implementation("io.jsonwebtoken:jjwt:${jsonwebtokenVersion}")
+	}
+}
+
+
+project(":app-model") {
+	dependencies {
+		implementation(project(':commons-model')) { transitive = false }
+	}
+}
+
+project(":app-api") {
+	apply plugin: 'com.palantir.docker'
+	dependencies {
+		implementation(project(':commons-model')) { transitive = false }
+		implementation(project(':commons-data')) { transitive = false }
+		implementation(project(':commons-api')) { transitive = false }
+		implementation(project(':commons-service')) { transitive = false }
+		implementation(project(':app-model'))
+		implementation('org.springframework.boot:spring-boot-starter-web')
+		implementation('org.springframework.boot:spring-boot-starter-data-mongodb')
+		implementation('org.springframework.boot:spring-boot-starter-actuator')
+		implementation("com.github.vineey:rsql-querydsl-all:${rsqlQuerydslVersion}")		
+	}
+}
+
+/**
+  * Configuramos los proyectos que son librerias en lugar de microservicios para su publicacion en
+  * el repositorio. Tambien habilitamos la generacion del jar no ejecutable (en lugar de utilizar
+  * el plugin de resolucion de dependencias directamente usamos el de spring boot).
+  */
+configure(subprojects.findAll { !it.name.startsWith("app-api") }) {
+	task sourcesJar(type: Jar) {
+		from sourceSets.main.allJava
+		classifier = 'sources'
+	}
+	jar {
+		enabled = true
+	}
+	bootJar {
+		classifier = 'boot'
+		mainClassName = 'org.labcabrera.dummy.Dummy'
+	}
+	publishing {
+		publications {
+			mavenJava(MavenPublication) {
+				groupId = group
+				artifactId = project.name
+				version = version
+				from components.java
+				artifact sourcesJar
+			}
+		}
+	}
+}

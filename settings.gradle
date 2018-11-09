@@ -1,0 +1,9 @@
+rootProject.name = 'sample-mongo-ddd'
+
+include ":commons-model",
+		":commons-data",
+		":commons-service",
+		":commons-security",
+		":commons-api",
+		":app-model",
+		":app-api"
