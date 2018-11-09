@@ -2,7 +2,7 @@ package org.labcabrera.samples.mongo.ddd.commons.api;
 
 import org.labcabrera.samples.mongo.ddd.commons.api.controller.impl.SwaggerController;
 import org.labcabrera.samples.mongo.ddd.commons.api.errors.DefaultRestExceptionHandler;
-import org.labcabrera.samples.mongo.ddd.commons.api.predicate.PredicateParser;
+import org.labcabrera.samples.mongo.ddd.commons.api.querydsl.PredicateParser;
 import org.labcabrera.samples.mongo.ddd.commons.api.security.RepositoryDetailService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;

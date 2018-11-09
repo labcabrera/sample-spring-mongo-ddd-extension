@@ -1,4 +1,4 @@
-package org.labcabrera.samples.mongo.ddd.commons.api.predicate;
+package org.labcabrera.samples.mongo.ddd.commons.api.querydsl;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;

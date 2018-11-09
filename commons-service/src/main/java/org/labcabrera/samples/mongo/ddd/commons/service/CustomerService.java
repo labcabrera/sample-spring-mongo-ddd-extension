@@ -1,8 +1,8 @@
 package org.labcabrera.samples.mongo.ddd.commons.service;
 
-import org.labcabrera.samples.mongo.ddd.commons.data.ContractRepository;
-import org.labcabrera.samples.mongo.ddd.commons.model.Contract;
-import org.labcabrera.samples.mongo.ddd.commons.model.QContract;
+import org.labcabrera.samples.mongo.ddd.commons.data.CustomerRepository;
+import org.labcabrera.samples.mongo.ddd.commons.model.Customer;
+import org.labcabrera.samples.mongo.ddd.commons.model.QCustomer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -12,23 +12,23 @@ import com.querydsl.core.types.dsl.ListPath;
 import com.querydsl.core.types.dsl.StringPath;
 
 @Service
-public class ContractService extends AbstractSecurityService<Contract> {
+public class CustomerService extends AbstractSecurityService<Customer> {
 
 	@Autowired
-	private ContractRepository repository;
+	private CustomerRepository repository;
 
 	@Override
 	protected ListPath<String, StringPath> getAutorizationPaths() {
-		return QContract.contract.authorization;
+		return QCustomer.customer.authorization;
 	}
 
 	@Override
-	protected PagingAndSortingRepository<Contract, String> getPagedRepository() {
+	protected PagingAndSortingRepository<Customer, String> getPagedRepository() {
 		return repository;
 	}
 
 	@Override
-	protected QuerydslPredicateExecutor<Contract> getQuerydslRepository() {
+	protected QuerydslPredicateExecutor<Customer> getQuerydslRepository() {
 		return repository;
 	}
 
