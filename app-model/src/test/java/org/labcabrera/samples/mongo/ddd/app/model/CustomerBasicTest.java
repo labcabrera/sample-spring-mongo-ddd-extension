@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.labcabrera.samples.mongo.ddd.commons.data.CustomerRepository;
+import org.labcabrera.samples.mongo.ddd.commons.model.Customer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -13,24 +14,25 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class CustomerBasicTest {
 
 	@Autowired
-	private CustomerRepository repository;
+	private CustomerRepository<CustomerAdditionalData> repository;
 
 	@Test
 	public void test() {
-		AppCustomer customer = new AppCustomer();
+		Customer<CustomerAdditionalData> customer = new Customer<>();
 		customer.setName("Test");
-		customer.setCode("12345");
+		customer.setAdditionalData(new CustomerAdditionalData());
+		customer.getAdditionalData().setCode("12345");
 
-		AppCustomer saved = repository.save(customer);
+		Customer<CustomerAdditionalData> saved = repository.save(customer);
 
 		String id = saved.getId();
 		Assert.assertNotNull(id);
-		Assert.assertEquals(customer.getCode(), saved.getCode());
+		Assert.assertEquals(customer.getAdditionalData().getCode(), saved.getAdditionalData().getCode());
 
 		// TODO generics
-		AppCustomer readed = (AppCustomer) repository.findById(id).get();
+		Customer<CustomerAdditionalData> readed = repository.findById(id).get();
 
-		Assert.assertEquals(customer.getCode(), readed.getCode());
+		Assert.assertEquals(customer.getAdditionalData().getCode(), readed.getAdditionalData().getCode());
 	}
 
 }

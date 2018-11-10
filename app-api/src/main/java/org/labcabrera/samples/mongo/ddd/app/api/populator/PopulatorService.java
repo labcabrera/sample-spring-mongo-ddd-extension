@@ -4,10 +4,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import org.labcabrera.samples.mongo.ddd.app.model.AppCustomer;
+import org.labcabrera.samples.mongo.ddd.app.model.CustomerAdditionalData;
 import org.labcabrera.samples.mongo.ddd.app.model.Product;
 import org.labcabrera.samples.mongo.ddd.commons.data.ApiUserRepository;
 import org.labcabrera.samples.mongo.ddd.commons.data.CustomerRepository;
+import org.labcabrera.samples.mongo.ddd.commons.model.Customer;
 import org.labcabrera.samples.mongo.ddd.commons.model.security.ApiUser;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Query;
@@ -27,7 +28,7 @@ public class PopulatorService {
 
 	private final MongoOperations mongoOperations;
 	private final ApiUserRepository apiUserRepository;
-	private final CustomerRepository customerRepository;
+	private final CustomerRepository<CustomerAdditionalData> customerRepository;
 	private final ObjectMapper mapper;
 	private final PasswordEncoder passwordEncoder;
 
@@ -77,8 +78,9 @@ public class PopulatorService {
 		log.info("Populating customers");
 		try (InputStream in = Thread.currentThread().getContextClassLoader()
 			.getResourceAsStream("data/customers.json")) {
-			List<AppCustomer> customers = mapper.readValue(in, new TypeReference<List<AppCustomer>>() {
-			});
+			List<Customer<CustomerAdditionalData>> customers = mapper.readValue(in,
+				new TypeReference<List<Customer<CustomerAdditionalData>>>() {
+				});
 			customerRepository.saveAll(customers);
 		}
 		catch (IOException ex) {

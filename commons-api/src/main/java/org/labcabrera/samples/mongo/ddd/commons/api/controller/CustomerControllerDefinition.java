@@ -5,6 +5,7 @@ import org.labcabrera.samples.mongo.ddd.commons.api.hateoas.resources.ContractCu
 import org.labcabrera.samples.mongo.ddd.commons.api.hateoas.resources.CustomerResource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedResources;
+import org.springframework.hateoas.ResourceSupport;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,13 +23,13 @@ import springfox.documentation.annotations.ApiIgnore;
 @RestController
 @RequestMapping(value = "/v1/customers", produces = "application/hal+json")
 @Api(tags = "Customers")
-public interface CustomerControllerDefinition { //@formatter:off
+public interface CustomerControllerDefinition<E extends ResourceSupport> { //@formatter:off
 
 	@GetMapping("/{id}")
 	@ApiOperation(
 		value = "Customer search by id",
 		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
-	ResponseEntity<CustomerResource> findById(
+	ResponseEntity<E> findById(
 		@PathVariable("id")
 		String id);
 
@@ -40,7 +41,7 @@ public interface CustomerControllerDefinition { //@formatter:off
 		@ApiImplicitParam(name = "page", value = "Page number", required = false, dataType = "string", paramType = "query", defaultValue = "0"),
 		@ApiImplicitParam(name = "size", value = "Page size", required = false, dataType = "string", paramType = "query", defaultValue = "10"),
 		@ApiImplicitParam(name = "sort", value = "Sort expression", required = false, dataType = "string", paramType = "query", example = "name,asc") })
-	ResponseEntity<PagedResources<CustomerResource>> find( 
+	ResponseEntity<PagedResources<E>> find( 
 		@RequestParam(value = "search", required = false, defaultValue = "")
 		String search,
 

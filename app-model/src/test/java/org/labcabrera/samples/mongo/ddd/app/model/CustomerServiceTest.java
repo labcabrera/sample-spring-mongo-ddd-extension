@@ -26,10 +26,10 @@ import com.querydsl.core.types.Predicate;
 public class CustomerServiceTest {
 
 	@Autowired
-	private CustomerRepository repository;
+	private CustomerRepository<CustomerAdditionalData> repository;
 
 	@Autowired
-	private CustomerService service;
+	private CustomerService<CustomerAdditionalData> service;
 
 	@Test
 	public void test() {
@@ -37,25 +37,26 @@ public class CustomerServiceTest {
 		TestingAuthenticationToken token = new TestingAuthenticationToken("test", "test", "test");
 		context.setAuthentication(token);
 
-		AppCustomer customer = new AppCustomer();
+		Customer<CustomerAdditionalData> customer = new Customer<>();
 		customer.setName("John");
 		customer.setSurname("Doe");
-		customer.setCode("12345");
+		customer.setAdditionalData(new CustomerAdditionalData());
+		customer.getAdditionalData().setCode("12345");
 		customer.setAuthorization(Arrays.asList("test"));
 
-		AppCustomer saved = repository.save(customer);
+		Customer<CustomerAdditionalData> saved = repository.save(customer);
 
 		String id = saved.getId();
 		Assert.assertNotNull(id);
-		Assert.assertEquals(customer.getCode(), saved.getCode());
+		Assert.assertEquals(customer.getAdditionalData().getCode(), saved.getAdditionalData().getCode());
 
 		Predicate predicate = QCustomer.customer.id.eq(id);
 		Pageable pageable = PageRequest.of(0, 10);
 
-		Page<Customer> page = service.findAll(predicate, pageable);
+		Page<Customer<CustomerAdditionalData>> page = service.findAll(predicate, pageable);
 
-		AppCustomer readed = (AppCustomer) page.getContent().get(0);
-		Assert.assertEquals(customer.getCode(), readed.getCode());
+		Customer<CustomerAdditionalData> readed = page.getContent().get(0);
+		Assert.assertEquals(customer.getAdditionalData().getCode(), readed.getAdditionalData().getCode());
 
 		// Other user can read previous entity
 		TestingAuthenticationToken otherUserToken = new TestingAuthenticationToken("user2", "user2", "user2");

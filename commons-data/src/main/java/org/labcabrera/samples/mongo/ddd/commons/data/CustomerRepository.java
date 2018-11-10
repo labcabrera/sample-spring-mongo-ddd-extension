@@ -8,7 +8,7 @@ import org.labcabrera.samples.mongo.ddd.commons.model.QCustomer;
 import com.google.common.collect.ImmutableMap;
 import com.querydsl.core.types.Path;
 
-public interface CustomerRepository extends ApiRepository<Customer> {
+public interface CustomerRepository<E> extends ApiRepository<Customer<E>> {
 
 	@SuppressWarnings("rawtypes")
 	Map<String, Path> PATH_MAP = ImmutableMap.<String, Path>builder() //@formatter:off

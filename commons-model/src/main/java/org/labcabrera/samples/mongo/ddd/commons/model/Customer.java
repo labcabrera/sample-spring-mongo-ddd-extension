@@ -17,7 +17,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Customer implements HasAuthorization {
+public class Customer<E> implements HasAuthorization {
 
 	@Id
 	private String id;
@@ -35,4 +35,6 @@ public class Customer implements HasAuthorization {
 	private IdCard idCard;
 
 	private List<String> authorization;
+
+	private E additionalData;
 }

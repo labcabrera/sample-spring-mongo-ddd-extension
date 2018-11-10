@@ -6,15 +6,17 @@
 		"idCard": {
 			"number": "1000001A"
 		},
-		"code": "0001",
-		"products": [
-			{
-				"id": "1"
-			},
-			{
-				"id": "2"
-			}
-		],
+		"additionalData": {
+			"code": "0001",
+			"products": [
+				{
+					"id": "1"
+				},
+				{
+					"id": "2"
+				}
+			]
+		},
 		"authorization": [
 			"demo1"
 		]
@@ -26,7 +28,9 @@
 		"idCard": {
 			"number": "1000002B"
 		},
-		"code": "0002",
+		"additionalData": {
+			"code": "0002"
+		},
 		"authorization": [
 			"demo1"
 		]
@@ -38,7 +42,9 @@
 		"idCard": {
 			"number": "1000003C"
 		},
-		"code": "0003",
+		"additionalData": {
+			"code": "0003"
+		},
 		"authorization": [
 			"demo1"
 		]
@@ -50,7 +56,9 @@
 		"idCard": {
 			"number": "1000004C"
 		},
-		"code": "0004",
+		"additionalData": {
+			"code": "0004"
+		},
 		"authorization": [
 			"demo1"
 		]
@@ -62,7 +70,9 @@
 		"idCard": {
 			"number": "1000005C"
 		},
-		"code": "0005",
+		"additionalData": {
+			"code": "0005"
+		},
 		"authorization": [
 			"demo1"
 		]
@@ -74,7 +84,9 @@
 		"idCard": {
 			"number": "1000006C"
 		},
-		"code": "0006",
+		"additionalData": {
+			"code": "0006"
+		},
 		"authorization": [
 			"demo1"
 		]
@@ -86,7 +98,9 @@
 		"idCard": {
 			"number": "1000007C"
 		},
-		"code": "0007",
+		"additionalData": {
+			"code": "0007"
+		},
 		"authorization": [
 			"demo1"
 		]
@@ -98,7 +112,9 @@
 		"idCard": {
 			"number": "1000008C"
 		},
-		"code": "0008",
+		"additionalData": {
+			"code": "0008"
+		},
 		"authorization": [
 			"demo1"
 		]
@@ -110,7 +126,9 @@
 		"idCard": {
 			"number": "1000009C"
 		},
-		"code": "0009",
+		"additionalData": {
+			"code": "0009"
+		},
 		"authorization": [
 			"demo1"
 		]
@@ -122,7 +140,9 @@
 		"idCard": {
 			"number": "1000010C"
 		},
-		"code": "0010",
+		"additionalData": {
+			"code": "0010"
+		},
 		"authorization": [
 			"demo1"
 		]
@@ -134,7 +154,9 @@
 		"idCard": {
 			"number": "1000011C"
 		},
-		"code": "0011",
+		"additionalData": {
+			"code": "0011"
+		},
 		"authorization": [
 			"demo2"
 		]
@@ -146,7 +168,9 @@
 		"idCard": {
 			"number": "1000012C"
 		},
-		"code": "0012",
+		"additionalData": {
+			"code": "0012"
+		},
 		"authorization": [
 			"demo1",
 			"demo2"

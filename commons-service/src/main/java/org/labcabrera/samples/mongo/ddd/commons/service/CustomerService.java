@@ -12,10 +12,10 @@ import com.querydsl.core.types.dsl.ListPath;
 import com.querydsl.core.types.dsl.StringPath;
 
 @Service
-public class CustomerService extends AbstractSecurityService<Customer> {
+public class CustomerService<E> extends AbstractSecurityService<Customer<E>> {
 
 	@Autowired
-	private CustomerRepository repository;
+	private CustomerRepository<E> repository;
 
 	@Override
 	protected ListPath<String, StringPath> getAutorizationPaths() {
@@ -23,12 +23,12 @@ public class CustomerService extends AbstractSecurityService<Customer> {
 	}
 
 	@Override
-	protected PagingAndSortingRepository<Customer, String> getPagedRepository() {
+	protected PagingAndSortingRepository<Customer<E>, String> getPagedRepository() {
 		return repository;
 	}
 
 	@Override
-	protected QuerydslPredicateExecutor<Customer> getQuerydslRepository() {
+	protected QuerydslPredicateExecutor<Customer<E>> getQuerydslRepository() {
 		return repository;
 	}
 

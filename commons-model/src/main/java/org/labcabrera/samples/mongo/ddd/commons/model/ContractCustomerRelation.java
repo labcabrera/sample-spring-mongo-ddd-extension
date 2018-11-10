@@ -7,23 +7,17 @@ import javax.validation.constraints.NotNull;
 
 import org.labcabrera.samples.mongo.ddd.commons.model.security.HasAuthorization;
 import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Getter;
 import lombok.Setter;
 
-@Document(collection = "contractRelations")
 @Getter
 @Setter
-public class ContractCustomerRelation implements HasAuthorization {
+public class ContractCustomerRelation<T> implements HasAuthorization {
 
 	@DBRef
 	@NotNull
-	private Contract contract;
-
-	@DBRef
-	@NotNull
-	private Customer customer;
+	private Customer<T> customer;
 
 	@NotNull
 	private RelationType type;
