@@ -40,6 +40,58 @@ En nuestro ejemplo sólamente tenemos las anotaciones de MongoDB, aunque este de
 al modelo de persistencia y en determinados casos podríamos tener también anotaciones de JPA, algo
 que para evitar complicar el código no he incluido.
 
+Tenemos diferentes opciones a la hora de extender el modelo. Las principales serían:
+
+* Extender las entidades
+* Utilizar entidades compuestas
+* Utilizar genéricos para establecer la información adicional.
+
+En el primer caso tendríamos:
+
+[source,java]
+----
+public class Contract { // canonical model
+}
+
+public class CustomContract extends Contract {
+}
+----
+
+El principal inconveniente de esta solución es que tendríamos que estar haciendo conversiones de
+aquellos campos definidos en el modelo. Por ejemplo, si _Contract_ tiene una lista de objetos de
+tipo _Customer_ que después queremos extender a _CustomCustomer_ tendríamos que estar haciendo
+
+[source,java]
+----
+List<CustomCustomer> customer = (List<CustomCustomer>)contract.getCustomers();
+----
+
+En el segundo caso tendríamos:
+
+[source,java]
+----
+public class Contract { // canonical model
+}
+
+public class CustomContract {
+  private Contract contract;
+  // other specific fields here
+}
+----
+
+En el tercer caso tendríamos:
+
+[source,java]
+----
+public class Contract<E> {
+  // some fields
+  private E additionalData;
+}
+
+public class CustomContractAdditionalData {
+}
+----
+
 == Repositorios
 
 Los repositorios están definidos en el proyecto
