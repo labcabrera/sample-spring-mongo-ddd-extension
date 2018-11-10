@@ -22,7 +22,7 @@ import com.querydsl.core.types.Path;
 
 import springfox.documentation.annotations.ApiIgnore;
 
-public class CustomerController<E> extends AbstractResourceController<Customer<E>, CustomerResource>
+public abstract class CustomerController<E> extends AbstractResourceController<Customer<E>, CustomerResource>
 	implements CustomerControllerDefinition<E> {
 
 	public CustomerController(AbstractSecurityService<Customer<E>> service,
