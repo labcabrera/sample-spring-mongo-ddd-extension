@@ -11,6 +11,10 @@ import org.springframework.stereotype.Service;
 import com.querydsl.core.types.dsl.ListPath;
 import com.querydsl.core.types.dsl.StringPath;
 
+/**
+ * 
+ * @param <E> Contract additional data type
+ */
 @Service
 public class ContractService<E> extends AbstractSecurityService<Contract<E>> {
 

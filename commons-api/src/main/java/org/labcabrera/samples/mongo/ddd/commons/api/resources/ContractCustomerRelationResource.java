@@ -1,4 +1,4 @@
-package org.labcabrera.samples.mongo.ddd.commons.api.hateoas.resources;
+package org.labcabrera.samples.mongo.ddd.commons.api.resources;
 
 import org.labcabrera.samples.mongo.ddd.commons.model.ContractCustomerRelation;
 import org.springframework.hateoas.ResourceSupport;

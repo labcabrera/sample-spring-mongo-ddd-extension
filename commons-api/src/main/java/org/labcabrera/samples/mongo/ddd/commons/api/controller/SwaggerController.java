@@ -1,4 +1,4 @@
-package org.labcabrera.samples.mongo.ddd.commons.api.controller.impl;
+package org.labcabrera.samples.mongo.ddd.commons.api.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;

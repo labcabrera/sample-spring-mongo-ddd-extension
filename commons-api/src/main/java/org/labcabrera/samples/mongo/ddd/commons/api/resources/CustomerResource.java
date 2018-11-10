@@ -1,4 +1,4 @@
-package org.labcabrera.samples.mongo.ddd.commons.api.hateoas.resources;
+package org.labcabrera.samples.mongo.ddd.commons.api.resources;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -12,11 +12,11 @@ import lombok.Getter;
 
 @Getter
 @Relation(collectionRelation = "customers")
-public class CustomerResource extends ResourceSupport {
+public class CustomerResource<E> extends ResourceSupport {
 
-	private final Customer<?> customer;
+	private final Customer<E> customer;
 
-	public CustomerResource(Customer<?> entity) {
+	public CustomerResource(Customer<E> entity) {
 		this.customer = entity;
 		add(linkTo(methodOn(CustomerControllerDefinition.class).findById(entity.getId())).withSelfRel());
 	}

@@ -1,7 +1,7 @@
 package org.labcabrera.samples.mongo.ddd.commons.api.controller;
 
 import org.labcabrera.samples.mongo.ddd.commons.api.SwaggerConfig;
-import org.labcabrera.samples.mongo.ddd.commons.api.hateoas.resources.ContractResource;
+import org.labcabrera.samples.mongo.ddd.commons.api.resources.ContractResource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +28,7 @@ public interface ContractControllerDefinition<E> { //@formatter:off
 	@ApiOperation(
 		value = "Contract search by id",
 		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
-	ResponseEntity<ContractResource> findById(
+	ResponseEntity<ContractResource<E>> findById(
 		@ApiParam(name = "id", value = "Policy identifier", required = true)
 		@PathVariable(value = "id", required = true)
 		String id);
@@ -41,7 +41,7 @@ public interface ContractControllerDefinition<E> { //@formatter:off
 		@ApiImplicitParam(name = "page", value = "Page number", required = false, dataType = "string", paramType = "query", defaultValue = "0"),
 		@ApiImplicitParam(name = "size", value = "Page size", required = false, dataType = "string", paramType = "query", defaultValue = "10"),
 		@ApiImplicitParam(name = "sort", value = "Sort expression", required = false, dataType = "string", paramType = "query", example = "name,asc") })
-	ResponseEntity<PagedResources<ContractResource>> find(
+	ResponseEntity<PagedResources<ContractResource<E>>> find(
 		@RequestParam(value = "search", required = false, defaultValue = "") String search,
 		@ApiIgnore Pageable pageable);
 
@@ -53,7 +53,7 @@ public interface ContractControllerDefinition<E> { //@formatter:off
 		@ApiImplicitParam(name = "page", value = "Page number", required = false, dataType = "string", paramType = "query", defaultValue = "0"),
 		@ApiImplicitParam(name = "size", value = "Page size", required = false, dataType = "string", paramType = "query", defaultValue = "10"),
 		@ApiImplicitParam(name = "sort", value = "Sort expression", required = false, dataType = "string", paramType = "query", example = "name,asc") })
-	ResponseEntity<PagedResources<ContractResource>> findContractRelations(
+	ResponseEntity<PagedResources<ContractResource<E>>> findContractRelations(
 		@ApiParam(value = "Policy identifier", required = true)
 		@PathVariable(value = "id", required = true)
 		String policyId,

@@ -1,6 +1,6 @@
 package org.labcabrera.samples.mongo.ddd.commons.api;
 
-import org.labcabrera.samples.mongo.ddd.commons.api.controller.impl.SwaggerController;
+import org.labcabrera.samples.mongo.ddd.commons.api.controller.SwaggerController;
 import org.labcabrera.samples.mongo.ddd.commons.api.errors.DefaultRestExceptionHandler;
 import org.labcabrera.samples.mongo.ddd.commons.api.querydsl.PredicateParser;
 import org.labcabrera.samples.mongo.ddd.commons.api.security.RepositoryDetailService;
