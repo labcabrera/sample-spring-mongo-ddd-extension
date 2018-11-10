@@ -36,7 +36,8 @@ public abstract class AbstractSecurityService<T extends HasAuthorization> {
 		}
 		T entity = (T) optional.get();
 		List<String> permissions = readPermissions();
-		if (entity.getAuthorization() == null || entity.getAuthorization().isEmpty()) {
+		if (entity.getAuthorization() == null || entity.getAuthorization().isEmpty()
+			|| permissions.contains(HasAuthorization.ROOT)) {
 			return optional;
 		}
 		for (String i : entity.getAuthorization()) {
@@ -83,6 +84,10 @@ public abstract class AbstractSecurityService<T extends HasAuthorization> {
 		if (permissions == null || permissions.isEmpty()) {
 			throw new AccessDeniedException("Missing permissions");
 		}
+		if (permissions.contains(HasAuthorization.ROOT)) {
+			return predicate;
+		}
+
 		ListPath<String, StringPath> paths = getAutorizationPaths();
 		List<Predicate> predicates = new ArrayList<>();
 		for (String i : permissions) {
