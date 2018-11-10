@@ -1,8 +1,6 @@
 package org.labcabrera.samples.mongo.ddd.commons.api.controller;
 
 import org.labcabrera.samples.mongo.ddd.commons.api.SwaggerConfig;
-import org.labcabrera.samples.mongo.ddd.commons.api.resources.ContractCustomerRelationResource;
-import org.labcabrera.samples.mongo.ddd.commons.api.resources.CustomerResource;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.http.ResponseEntity;
@@ -22,13 +20,13 @@ import springfox.documentation.annotations.ApiIgnore;
 @RestController
 @RequestMapping(value = "/v1/customers", produces = "application/hal+json")
 @Api(tags = "Customers")
-public interface CustomerControllerDefinition<E> { //@formatter:off
+public interface CustomerControllerDefinition<E, R> { //@formatter:off
 
 	@GetMapping("/{id}")
 	@ApiOperation(
 		value = "Customer search by id",
 		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
-	ResponseEntity<CustomerResource<E>> findById(
+	ResponseEntity<E> findById(
 		@PathVariable("id")
 		String id);
 
@@ -40,7 +38,7 @@ public interface CustomerControllerDefinition<E> { //@formatter:off
 		@ApiImplicitParam(name = "page", value = "Page number", required = false, dataType = "string", paramType = "query", defaultValue = "0"),
 		@ApiImplicitParam(name = "size", value = "Page size", required = false, dataType = "string", paramType = "query", defaultValue = "10"),
 		@ApiImplicitParam(name = "sort", value = "Sort expression", required = false, dataType = "string", paramType = "query", example = "name,asc") })
-	ResponseEntity<PagedResources<CustomerResource<E>>> find( 
+	ResponseEntity<PagedResources<E>> find( 
 		@RequestParam(value = "search", required = false, defaultValue = "")
 		String search,
 
@@ -55,9 +53,9 @@ public interface CustomerControllerDefinition<E> { //@formatter:off
 		@ApiImplicitParam(name = "page", value = "Page number", required = false, dataType = "string", paramType = "query", defaultValue = "0"),
 		@ApiImplicitParam(name = "size", value = "Page size", required = false, dataType = "string", paramType = "query", defaultValue = "10"),
 		@ApiImplicitParam(name = "sort", value = "Sort expression", required = false, dataType = "string", paramType = "query", example = "name,asc") })
-	ResponseEntity<PagedResources<ContractCustomerRelationResource>> findCustomerRelations( 
+	ResponseEntity<PagedResources<R>> findCustomerRelations( 
 		@PathVariable(name = "id", required = true)
-		Long id,
+		String id,
 
 		@ApiIgnore
 		Pageable pageable);

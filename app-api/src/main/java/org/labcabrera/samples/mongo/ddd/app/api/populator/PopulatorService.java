@@ -4,10 +4,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import org.labcabrera.samples.mongo.ddd.app.model.ContractAdditionalData;
 import org.labcabrera.samples.mongo.ddd.app.model.CustomerAdditionalData;
 import org.labcabrera.samples.mongo.ddd.app.model.Product;
 import org.labcabrera.samples.mongo.ddd.commons.data.ApiUserRepository;
+import org.labcabrera.samples.mongo.ddd.commons.data.ContractRepository;
 import org.labcabrera.samples.mongo.ddd.commons.data.CustomerRepository;
+import org.labcabrera.samples.mongo.ddd.commons.model.Contract;
 import org.labcabrera.samples.mongo.ddd.commons.model.Customer;
 import org.labcabrera.samples.mongo.ddd.commons.model.security.ApiUser;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -29,6 +32,7 @@ public class PopulatorService {
 	private final MongoOperations mongoOperations;
 	private final ApiUserRepository apiUserRepository;
 	private final CustomerRepository<CustomerAdditionalData> customerRepository;
+	private final ContractRepository<ContractAdditionalData> contractRepository;
 	private final ObjectMapper mapper;
 	private final PasswordEncoder passwordEncoder;
 
@@ -36,6 +40,7 @@ public class PopulatorService {
 		checkApiUsers();
 		checkProducts();
 		checkCustomers();
+		checkContracts();
 	}
 
 	private void checkApiUsers() {
@@ -67,7 +72,7 @@ public class PopulatorService {
 			mongoOperations.insertAll(products);
 		}
 		catch (IOException ex) {
-			throw new RuntimeException("Error reading initial api users", ex);
+			throw new RuntimeException("Error reading initial products", ex);
 		}
 	}
 
@@ -84,7 +89,24 @@ public class PopulatorService {
 			customerRepository.saveAll(customers);
 		}
 		catch (IOException ex) {
-			throw new RuntimeException("Error reading initial api users", ex);
+			throw new RuntimeException("Error reading initial customers", ex);
+		}
+	}
+
+	private void checkContracts() {
+		if (contractRepository.count() > 0) {
+			return;
+		}
+		log.info("Populating contracts");
+		try (InputStream in = Thread.currentThread().getContextClassLoader()
+			.getResourceAsStream("data/contracts.json")) {
+			List<Contract<ContractAdditionalData>> contracts = mapper.readValue(in,
+				new TypeReference<List<Contract<ContractAdditionalData>>>() {
+				});
+			contractRepository.saveAll(contracts);
+		}
+		catch (IOException ex) {
+			throw new RuntimeException("Error reading initial contracts", ex);
 		}
 	}
 }

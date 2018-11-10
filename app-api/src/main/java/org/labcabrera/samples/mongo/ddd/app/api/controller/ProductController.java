@@ -1,4 +1,4 @@
-package org.labcabrera.samples.mongo.ddd.app.api.controller.impl;
+package org.labcabrera.samples.mongo.ddd.app.api.controller;
 
 import java.util.Optional;
 

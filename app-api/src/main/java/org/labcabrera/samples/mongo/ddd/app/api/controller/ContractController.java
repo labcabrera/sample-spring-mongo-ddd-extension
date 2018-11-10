@@ -1,9 +1,10 @@
-package org.labcabrera.samples.mongo.ddd.app.api.controller.impl;
+package org.labcabrera.samples.mongo.ddd.app.api.controller;
 
 import java.util.Optional;
 
 import org.labcabrera.samples.mongo.ddd.app.model.ContractAdditionalData;
 import org.labcabrera.samples.mongo.ddd.commons.api.SwaggerConfig;
+import org.labcabrera.samples.mongo.ddd.commons.api.controller.ContractControllerDefinition;
 import org.labcabrera.samples.mongo.ddd.commons.api.errors.EntityNotFoundException;
 import org.labcabrera.samples.mongo.ddd.commons.api.querydsl.PredicateParser;
 import org.labcabrera.samples.mongo.ddd.commons.api.resources.ContractResource;
@@ -19,27 +20,21 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.querydsl.core.types.Predicate;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
-@RequestMapping(value = "/v1/contracts", produces = "application/hal+json")
-@Api(tags = "Contracts")
-public class ContractController {
+public class ContractController implements
+	ContractControllerDefinition<ContractResource<ContractAdditionalData>, ContractResource<ContractAdditionalData>> {
 
 	private final ContractService<ContractAdditionalData> service;
 	private final PagedResourcesAssembler<Contract<ContractAdditionalData>> pagedAssembler;
@@ -60,22 +55,13 @@ public class ContractController {
 		};
 	}
 
-	@GetMapping("/{id}")
-	@ApiOperation(value = "Contract search by id",
-		authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
+	@Override
 	public ResponseEntity<ContractResource<ContractAdditionalData>> findById(@PathVariable("id") String id) {
 		return service.findById(id).map(e -> ResponseEntity.ok(new ContractResource<>(e)))
 			.orElseThrow(() -> new EntityNotFoundException("Missing entity " + id));
 	}
 
-	//@formatter:off
-	@GetMapping
-	@ApiOperation(value = "Contract search", authorizations = { @Authorization(value = SwaggerConfig.API_KEY_NAME) })
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "page", value = "Page number", required = false, dataType = "string", paramType = "query", defaultValue = "0"),
-		@ApiImplicitParam(name = "size", value = "Page size", required = false, dataType = "string", paramType = "query", defaultValue = "10"),
-		@ApiImplicitParam(name = "sort", value = "Sort expression", required = false, dataType = "string", paramType = "query", example = "name,asc") })
-	//@formatter:on
+	@Override
 	public ResponseEntity<PagedResources<ContractResource<ContractAdditionalData>>> find(
 		@RequestParam(name = "search", required = false, defaultValue = "") String search,
 		@ApiIgnore @PageableDefault(sort = "surname,name") Pageable pageable) {
@@ -84,6 +70,12 @@ public class ContractController {
 		Page<Contract<ContractAdditionalData>> page = predicate.isPresent() ? service.findAll(predicate.get(), pageable)
 			: service.findAll(pageable);
 		return ResponseEntity.ok(pagedAssembler.toResource(page, assembler));
+	}
+
+	@Override
+	public ResponseEntity<PagedResources<ContractResource<ContractAdditionalData>>> findContractRelations(
+		@PathVariable("id") String id, @ApiIgnore Pageable pageable) {
+		return null;
 	}
 
 	@PostMapping

@@ -1,0 +1,13 @@
+[
+	{
+		"contractNumber": "1001",
+		"effective": "2018-01-01",
+		"additionalData": {
+			"code": "001"
+		},
+		"authorization": [
+			"demo1",
+			"demo2"
+		]
+	}
+]
