@@ -2,6 +2,7 @@ package org.labcabrera.samples.mongo.ddd.app.api.controller;
 
 import java.util.Optional;
 
+import org.labcabrera.samples.mongo.ddd.app.model.ContractAdditionalData;
 import org.labcabrera.samples.mongo.ddd.app.model.CustomerAdditionalData;
 import org.labcabrera.samples.mongo.ddd.commons.api.controller.CustomerControllerDefinition;
 import org.labcabrera.samples.mongo.ddd.commons.api.errors.EntityNotFoundException;
@@ -34,7 +35,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @RequestMapping(value = "/v1/customers", produces = "application/hal+json")
 @Api(tags = "Customers")
 public class CustomerController implements
-	CustomerControllerDefinition<CustomerResource<CustomerAdditionalData>, ContractCustomerRelationResource> {
+	CustomerControllerDefinition<CustomerResource<CustomerAdditionalData>, ContractCustomerRelationResource<ContractAdditionalData, CustomerAdditionalData>> {
 
 	private final CustomerService<CustomerAdditionalData> service;
 	private final PagedResourcesAssembler<Customer<CustomerAdditionalData>> pagedAssembler;
@@ -73,8 +74,9 @@ public class CustomerController implements
 	}
 
 	@Override
-	public ResponseEntity<PagedResources<ContractCustomerRelationResource>> findCustomerRelations(String id,
-		Pageable pageable) {
+	public ResponseEntity<PagedResources<ContractCustomerRelationResource<ContractAdditionalData, CustomerAdditionalData>>> findCustomerRelations(
+		String id, Pageable pageable) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -13,6 +13,9 @@ public interface ContractRelationRepository<E, T> extends ApiRepository<Contract
 	@SuppressWarnings("rawtypes")
 	Map<String, Path> PATH_MAP = ImmutableMap.<String, Path>builder() //@formatter:off
 		.put("id", QContractCustomerRelation.contractCustomerRelation.id)
+		.put("contract.id", QContractCustomerRelation.contractCustomerRelation.contract.id)
+		.put("customer.id", QContractCustomerRelation.contractCustomerRelation.customer.id)
+		.put("type", QContractCustomerRelation.contractCustomerRelation.type)
 		.build(); //@formatter.on
 
 }

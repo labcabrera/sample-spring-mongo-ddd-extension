@@ -8,11 +8,11 @@ import lombok.Getter;
 
 @Getter
 @Relation(collectionRelation = "relations")
-public class ContractCustomerRelationResource extends ResourceSupport {
+public class ContractCustomerRelationResource<E, T> extends ResourceSupport {
 
-	private final ContractCustomerRelation<?, ?> relation;
+	private final ContractCustomerRelation<E, T> relation;
 
-	public ContractCustomerRelationResource(ContractCustomerRelation<?, ?> entity) {
+	public ContractCustomerRelationResource(ContractCustomerRelation<E, T> entity) {
 		this.relation = entity;
 	}
 

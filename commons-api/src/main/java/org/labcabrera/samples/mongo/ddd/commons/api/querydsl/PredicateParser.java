@@ -1,7 +1,5 @@
 package org.labcabrera.samples.mongo.ddd.commons.api.querydsl;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.Map;
 import java.util.Optional;
 
@@ -19,12 +17,6 @@ public class PredicateParser {
 
 	@SuppressWarnings("rawtypes")
 	public Optional<Predicate> buildPredicate(String searchExpression, Map<String, Path> pathMapping) {
-		try {
-			searchExpression = URLDecoder.decode(searchExpression, "UTF-8");
-		}
-		catch (UnsupportedEncodingException ex) {
-			throw new PredicateParseException(searchExpression, ex);
-		}
 		if (StringUtils.isEmpty(searchExpression)) {
 			return Optional.empty();
 		}
