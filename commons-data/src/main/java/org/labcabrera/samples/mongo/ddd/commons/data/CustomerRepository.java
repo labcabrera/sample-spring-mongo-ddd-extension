@@ -1,6 +1,7 @@
 package org.labcabrera.samples.mongo.ddd.commons.data;
 
 import java.util.Map;
+import java.util.Optional;
 
 import org.labcabrera.samples.mongo.ddd.commons.model.Customer;
 import org.labcabrera.samples.mongo.ddd.commons.model.QCustomer;
@@ -16,5 +17,7 @@ public interface CustomerRepository<E> extends ApiRepository<Customer<E>> {
 		.put("name", QCustomer.customer.name)
 		.put("surname", QCustomer.customer.surname)
 		.build(); //@formatter.on
+	
+	Optional<Customer<E>> findByIdCardNumber(String number);
 
 }

@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class ContractAdditionalData {
 
-	private String appCode;
+	private String code;
 
 }

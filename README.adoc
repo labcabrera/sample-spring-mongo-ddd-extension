@@ -42,9 +42,9 @@ que para evitar complicar el código no he incluido.
 
 Tenemos diferentes opciones a la hora de extender el modelo. Las principales serían:
 
-* Extender las entidades
-* Utilizar entidades compuestas
-* Utilizar genéricos para establecer la información adicional.
+* Extender las entidades.
+* Utilizar la composición de entidades.
+* Utilizar genéricos para establecer la información adicional (método utilizado en este ejemplo).
 
 En el primer caso tendríamos:
 
@@ -55,15 +55,6 @@ public class Contract { // canonical model
 
 public class CustomContract extends Contract {
 }
-----
-
-El principal inconveniente de esta solución es que tendríamos que estar haciendo conversiones de
-aquellos campos definidos en el modelo. Por ejemplo, si _Contract_ tiene una lista de objetos de
-tipo _Customer_ que después queremos extender a _CustomCustomer_ tendríamos que estar haciendo
-
-[source,java]
-----
-List<CustomCustomer> customer = (List<CustomCustomer>)contract.getCustomers();
 ----
 
 En el segundo caso tendríamos:
@@ -110,11 +101,7 @@ implementamos a nivel de la siguiente interface:
 ----
 public interface HasAuthorization {
 
-  String ROOT = "root";
-
   List<String> getAuthorization();
-
-  void setAuthorization(List<String> permissions);
 
 }
 ----
@@ -130,7 +117,7 @@ que es la que utilizaremos para las APIs de lectura de recursos.
 
 == APIs REST comunes
 
-En el proyecto {baseLink}/tree/master/commons-api [commons-api] hemos definido los componentes
+En el proyecto {baseLink}/tree/master/commons-api[commons-api] hemos definido los componentes
 comunes a los diferentes microservicios, así como las interfaces generales de lectura.
 
 == Utilizando JWT para la securización de nuesta APIs
@@ -173,11 +160,11 @@ objeto _Predicate_ de QueryDdl.
 
 == HATEOAS
 
-En este ejemplo también utilizaremos https://spring.io/projects/spring-hateoas[Spring-HATEOAS] para
-la exposición de nuestra API para acercarnos lo más posible al
-https://martinfowler.com/articles/richardsonMaturityModel.html[_Glory of Rest_].
+En este ejemplo también utilizaremos https://spring.io/projects/spring-hateoas[Spring HATEOAS] para
+la exposición de nuestra API con el fin de acercarnos lo más posible al
+https://martinfowler.com/articles/richardsonMaturityModel.html[Glory of Rest].
 
-== Swagger 2
+== Swagger
 
 Para la generación de la documentación de nuestra API utilizaremos la librería
 http://springfox.github.io/springfox/[SpringFox] que se integra fácilmente con Spring como podría

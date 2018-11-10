@@ -8,9 +8,11 @@ import org.labcabrera.samples.mongo.ddd.app.model.ContractAdditionalData;
 import org.labcabrera.samples.mongo.ddd.app.model.CustomerAdditionalData;
 import org.labcabrera.samples.mongo.ddd.app.model.Product;
 import org.labcabrera.samples.mongo.ddd.commons.data.ApiUserRepository;
+import org.labcabrera.samples.mongo.ddd.commons.data.ContractRelationRepository;
 import org.labcabrera.samples.mongo.ddd.commons.data.ContractRepository;
 import org.labcabrera.samples.mongo.ddd.commons.data.CustomerRepository;
 import org.labcabrera.samples.mongo.ddd.commons.model.Contract;
+import org.labcabrera.samples.mongo.ddd.commons.model.ContractCustomerRelation;
 import org.labcabrera.samples.mongo.ddd.commons.model.Customer;
 import org.labcabrera.samples.mongo.ddd.commons.model.security.ApiUser;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -33,6 +35,7 @@ public class PopulatorService {
 	private final ApiUserRepository apiUserRepository;
 	private final CustomerRepository<CustomerAdditionalData> customerRepository;
 	private final ContractRepository<ContractAdditionalData> contractRepository;
+	private final ContractRelationRepository<ContractAdditionalData, CustomerAdditionalData> relationRepository;
 	private final ObjectMapper mapper;
 	private final PasswordEncoder passwordEncoder;
 
@@ -41,6 +44,7 @@ public class PopulatorService {
 		checkProducts();
 		checkCustomers();
 		checkContracts();
+		checkRelations();
 	}
 
 	private void checkApiUsers() {
@@ -104,6 +108,32 @@ public class PopulatorService {
 				new TypeReference<List<Contract<ContractAdditionalData>>>() {
 				});
 			contractRepository.saveAll(contracts);
+		}
+		catch (IOException ex) {
+			throw new RuntimeException("Error reading initial contracts", ex);
+		}
+	}
+
+	private void checkRelations() {
+		if (relationRepository.count() > 0) {
+			return;
+		}
+		log.info("Populating relations");
+		try (InputStream in = Thread.currentThread().getContextClassLoader()
+			.getResourceAsStream("data/relations.json")) {
+			List<ContractCustomerRelation<ContractAdditionalData, CustomerAdditionalData>> relations = mapper.readValue(
+				in,
+				new TypeReference<List<ContractCustomerRelation<ContractAdditionalData, CustomerAdditionalData>>>() {
+				});
+			for (ContractCustomerRelation<ContractAdditionalData, CustomerAdditionalData> i : relations) {
+				Contract<ContractAdditionalData> contract = contractRepository
+					.findByContractNumber(i.getContract().getContractNumber()).get();
+				Customer<CustomerAdditionalData> customer = customerRepository
+					.findByIdCardNumber(i.getCustomer().getIdCard().getNumber()).get();
+				i.setContract(contract);
+				i.setCustomer(customer);
+			}
+			relationRepository.saveAll(relations);
 		}
 		catch (IOException ex) {
 			throw new RuntimeException("Error reading initial contracts", ex);

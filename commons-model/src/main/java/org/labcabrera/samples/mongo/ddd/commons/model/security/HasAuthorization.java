@@ -8,6 +8,4 @@ public interface HasAuthorization {
 
 	List<String> getAuthorization();
 
-	void setAuthorization(List<String> permissions);
-
 }
