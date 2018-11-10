@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import org.labcabrera.samples.mongo.ddd.app.model.AppCustomer;
 import org.labcabrera.samples.mongo.ddd.commons.data.ApiUserRepository;
 import org.labcabrera.samples.mongo.ddd.commons.data.CustomerRepository;
-import org.labcabrera.samples.mongo.ddd.commons.model.Customer;
 import org.labcabrera.samples.mongo.ddd.commons.model.security.ApiUser;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -56,7 +56,7 @@ public class PopulatorService {
 		log.info("Populating customers");
 		try (InputStream in = Thread.currentThread().getContextClassLoader()
 			.getResourceAsStream("data/customers.json")) {
-			List<Customer> customers = mapper.readValue(in, new TypeReference<List<Customer>>() {
+			List<AppCustomer> customers = mapper.readValue(in, new TypeReference<List<AppCustomer>>() {
 			});
 			customerRepository.saveAll(customers);
 		}
