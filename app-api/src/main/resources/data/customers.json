@@ -7,6 +7,14 @@
 			"number": "1000001A"
 		},
 		"code": "0001",
+		"products": [
+			{
+				"id": "1"
+			},
+			{
+				"id": "2"
+			}
+		],
 		"authorization": [
 			"demo1"
 		]
