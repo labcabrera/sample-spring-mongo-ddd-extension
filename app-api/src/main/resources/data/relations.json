@@ -34,5 +34,29 @@
 		},
 		"type": "RECIPIENT",
 		"percent": 100.00
+	},
+	{
+		"contract": {
+			"contractNumber": "1000002"
+		},
+		"customer": {
+			"idCard": {
+				"number": "1000001A"
+			}
+		},
+		"type": "HOLDER",
+		"percent": 100.00
+	},
+	{
+		"contract": {
+			"contractNumber": "1000003"
+		},
+		"customer": {
+			"idCard": {
+				"number": "1000004C"
+			}
+		},
+		"type": "HOLDER",
+		"percent": 100.00
 	}
 ]

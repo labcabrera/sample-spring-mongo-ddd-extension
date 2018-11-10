@@ -15,7 +15,7 @@ import lombok.Setter;
 @Document(collection = "contracts")
 @Getter
 @Setter
-public class Contract<E> implements HasAuthorization {
+public class Contract<E> implements HasAuthorization, HasId {
 
 	@Id
 	private String id;

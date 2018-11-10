@@ -50,8 +50,9 @@ project(":commons-model") {
 		compile('org.springframework.boot:spring-boot-starter-validation')
 		compile('org.springframework.boot:spring-boot-starter-data-mongodb')
 		compile('org.springframework.boot:spring-boot-starter-security')
-		compile('org.projectlombok:lombok')
 		compile("io.swagger:swagger-annotations:${swaggerAnnotationsVersion}")
+		compile('com.fasterxml.jackson.core:jackson-databind')
+		compile('org.projectlombok:lombok')
 	}
 	querydsl {
 		querydslDefault = true

@@ -6,9 +6,13 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import org.labcabrera.samples.mongo.ddd.commons.model.security.HasAuthorization;
+import org.labcabrera.samples.mongo.ddd.commons.serialization.BasicCustomerSerializer;
+import org.labcabrera.samples.mongo.ddd.commons.serialization.IdSerializer;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,10 +27,12 @@ public class ContractCustomerRelation<E, T> implements HasAuthorization {
 
 	@DBRef
 	@NotNull
+	@JsonSerialize(using = IdSerializer.class)
 	private Contract<E> contract;
 
 	@DBRef
 	@NotNull
+	@JsonSerialize(using = BasicCustomerSerializer.class)
 	private Customer<T> customer;
 
 	@NotNull

@@ -10,8 +10,12 @@ import org.labcabrera.samples.mongo.ddd.commons.api.querydsl.PredicateParser;
 import org.labcabrera.samples.mongo.ddd.commons.api.resources.ContractCustomerRelationResource;
 import org.labcabrera.samples.mongo.ddd.commons.api.resources.CustomerResource;
 import org.labcabrera.samples.mongo.ddd.commons.data.CustomerRepository;
+import org.labcabrera.samples.mongo.ddd.commons.model.ContractCustomerRelation;
 import org.labcabrera.samples.mongo.ddd.commons.model.Customer;
+import org.labcabrera.samples.mongo.ddd.commons.model.QContractCustomerRelation;
+import org.labcabrera.samples.mongo.ddd.commons.service.ContractRelationService;
 import org.labcabrera.samples.mongo.ddd.commons.service.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -37,28 +41,47 @@ import springfox.documentation.annotations.ApiIgnore;
 public class CustomerController implements
 	CustomerControllerDefinition<CustomerResource<CustomerAdditionalData>, ContractCustomerRelationResource<ContractAdditionalData, CustomerAdditionalData>> {
 
-	private final CustomerService<CustomerAdditionalData> service;
-	private final PagedResourcesAssembler<Customer<CustomerAdditionalData>> pagedAssembler;
-	private final ResourceAssembler<Customer<CustomerAdditionalData>, CustomerResource<CustomerAdditionalData>> assembler;
-	private final PredicateParser predicateParser;
+	@Autowired
+	private CustomerService<CustomerAdditionalData> customerService;
 
-	public CustomerController(CustomerService<CustomerAdditionalData> service,
-		PagedResourcesAssembler<Customer<CustomerAdditionalData>> pagedAssembler, PredicateParser predicateParser) {
-		this.service = service;
-		this.pagedAssembler = pagedAssembler;
-		this.predicateParser = predicateParser;
-		assembler = new ResourceAssembler<Customer<CustomerAdditionalData>, CustomerResource<CustomerAdditionalData>>() {
+	@Autowired
+	private ContractRelationService<ContractAdditionalData, CustomerAdditionalData> relationService;
+
+	@Autowired
+	private PagedResourcesAssembler<Customer<CustomerAdditionalData>> customerPagedAssembler;
+
+	@Autowired
+	private PagedResourcesAssembler<ContractCustomerRelation<ContractAdditionalData, CustomerAdditionalData>> relationPagedAssembler;
+
+	@Autowired
+	private PredicateParser predicateParser;
+
+	private final ResourceAssembler<Customer<CustomerAdditionalData>, CustomerResource<CustomerAdditionalData>> customerAssembler;
+
+	private final ResourceAssembler<ContractCustomerRelation<ContractAdditionalData, CustomerAdditionalData>, ContractCustomerRelationResource<ContractAdditionalData, CustomerAdditionalData>> relationAssembler;
+
+	public CustomerController() {
+		customerAssembler = new ResourceAssembler<Customer<CustomerAdditionalData>, CustomerResource<CustomerAdditionalData>>() {
 
 			@Override
 			public CustomerResource<CustomerAdditionalData> toResource(Customer<CustomerAdditionalData> entity) {
 				return new CustomerResource<>(entity);
 			}
 		};
+		relationAssembler = new ResourceAssembler<ContractCustomerRelation<ContractAdditionalData, CustomerAdditionalData>, ContractCustomerRelationResource<ContractAdditionalData, CustomerAdditionalData>>() {
+
+			@Override
+			public ContractCustomerRelationResource<ContractAdditionalData, CustomerAdditionalData> toResource(
+				ContractCustomerRelation<ContractAdditionalData, CustomerAdditionalData> entity) {
+				return new ContractCustomerRelationResource<>(entity);
+			}
+		};
+
 	}
 
 	@Override
 	public ResponseEntity<CustomerResource<CustomerAdditionalData>> findById(@PathVariable String id) {
-		return service.findById(id).map(p -> ResponseEntity.ok(assembler.toResource(p)))
+		return customerService.findById(id).map(p -> ResponseEntity.ok(customerAssembler.toResource(p)))
 			.orElseThrow(() -> new EntityNotFoundException("Missing entity " + id));
 	}
 
@@ -68,16 +91,20 @@ public class CustomerController implements
 		@ApiIgnore @PageableDefault(sort = { "name", "surname" }) Pageable pageable) {
 		pageable = pageable != null ? pageable : PageRequest.of(0, 10, new Sort(Sort.Direction.ASC, "id"));
 		Optional<Predicate> predicate = predicateParser.buildPredicate(search, CustomerRepository.PATH_MAP);
-		Page<Customer<CustomerAdditionalData>> page = predicate.isPresent() ? service.findAll(predicate.get(), pageable)
-			: service.findAll(pageable);
-		return ResponseEntity.ok(pagedAssembler.toResource(page, assembler));
+		Page<Customer<CustomerAdditionalData>> page = predicate.isPresent()
+			? customerService.findAll(predicate.get(), pageable)
+			: customerService.findAll(pageable);
+		return ResponseEntity.ok(customerPagedAssembler.toResource(page, customerAssembler));
 	}
 
 	@Override
 	public ResponseEntity<PagedResources<ContractCustomerRelationResource<ContractAdditionalData, CustomerAdditionalData>>> findCustomerRelations(
 		String id, Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
+		pageable = pageable != null ? pageable : PageRequest.of(0, 10, new Sort(Sort.Direction.ASC, "id"));
+		Predicate predicate = QContractCustomerRelation.contractCustomerRelation.customer.id.eq(id);
+		Page<ContractCustomerRelation<ContractAdditionalData, CustomerAdditionalData>> page = relationService
+			.findAll(predicate, pageable);
+		return ResponseEntity.ok(relationPagedAssembler.toResource(page, relationAssembler));
 	}
 
 }

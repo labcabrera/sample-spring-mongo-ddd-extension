@@ -19,6 +19,8 @@ public class CustomerResource<E> extends ResourceSupport {
 	public CustomerResource(Customer<E> entity) {
 		this.customer = entity;
 		add(linkTo(methodOn(CustomerControllerDefinition.class).findById(entity.getId())).withSelfRel());
+		add(linkTo(methodOn(CustomerControllerDefinition.class).findCustomerRelations(entity.getId(), null))
+			.withRel("relations"));
 	}
 
 }

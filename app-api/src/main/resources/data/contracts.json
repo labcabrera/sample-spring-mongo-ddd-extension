@@ -20,5 +20,16 @@
 			"demo1",
 			"demo2"
 		]
+	},
+	{
+		"contractNumber": "1000003",
+		"effective": "2018-06-15",
+		"additionalData": {
+			"code": "003"
+		},
+		"authorization": [
+			"demo1",
+			"demo2"
+		]
 	}
 ]
