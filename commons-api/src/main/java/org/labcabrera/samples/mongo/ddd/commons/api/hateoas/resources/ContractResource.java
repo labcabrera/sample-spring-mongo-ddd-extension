@@ -14,9 +14,9 @@ import lombok.Getter;
 @Relation(collectionRelation = "contracts")
 public class ContractResource extends ResourceSupport {
 
-	private final Contract contract;
+	private final Contract<?> contract;
 
-	public ContractResource(Contract entity) {
+	public ContractResource(Contract<?> entity) {
 		this.contract = entity;
 		add(linkTo(methodOn(ContractControllerDefinition.class).findById(entity.getId())).withSelfRel());
 		add(linkTo(methodOn(ContractControllerDefinition.class).findContractRelations(entity.getId(), null))

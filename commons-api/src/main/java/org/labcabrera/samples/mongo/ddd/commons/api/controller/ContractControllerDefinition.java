@@ -22,7 +22,7 @@ import springfox.documentation.annotations.ApiIgnore;
 @RestController
 @RequestMapping(value = "/v1/contracts", produces = "application/hal+json")
 @Api(tags = "Contracts")
-public interface ContractControllerDefinition { //@formatter:off
+public interface ContractControllerDefinition<E> { //@formatter:off
 
 	@GetMapping("/{id}")
 	@ApiOperation(

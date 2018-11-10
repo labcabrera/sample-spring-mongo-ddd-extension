@@ -15,7 +15,7 @@ import lombok.Setter;
 @Document(collection = "contracts")
 @Getter
 @Setter
-public class Contract<E, T> implements HasAuthorization {
+public class Contract<E> implements HasAuthorization {
 
 	@Id
 	private String id;
@@ -27,8 +27,6 @@ public class Contract<E, T> implements HasAuthorization {
 	private LocalDate effective;
 
 	private List<String> authorization;
-
-	private List<ContractCustomerRelation<T>> relations;
 
 	private E additionalData;
 

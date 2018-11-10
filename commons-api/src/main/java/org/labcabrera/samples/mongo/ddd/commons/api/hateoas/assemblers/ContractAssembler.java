@@ -7,14 +7,14 @@ import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ContractAssembler extends ResourceAssemblerSupport<Contract, ContractResource> {
+public class ContractAssembler<E> extends ResourceAssemblerSupport<Contract<E>, ContractResource> {
 
 	public ContractAssembler() {
 		super(ContractControllerDefinition.class, ContractResource.class);
 	}
 
 	@Override
-	public ContractResource toResource(Contract entity) {
+	public ContractResource toResource(Contract<E> entity) {
 		return new ContractResource(entity);
 	}
 

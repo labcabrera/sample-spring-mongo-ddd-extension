@@ -14,9 +14,9 @@ import lombok.Getter;
 @Relation(collectionRelation = "customers")
 public class CustomerResource extends ResourceSupport {
 
-	private final Customer customer;
+	private final Customer<?> customer;
 
-	public CustomerResource(Customer entity) {
+	public CustomerResource(Customer<?> entity) {
 		this.customer = entity;
 		add(linkTo(methodOn(CustomerControllerDefinition.class).findById(entity.getId())).withSelfRel());
 	}

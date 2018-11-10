@@ -13,7 +13,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ContractCustomerRelation<T> implements HasAuthorization {
+public class ContractCustomerRelation<E, T> implements HasAuthorization {
+
+	@DBRef
+	@NotNull
+	private Contract<E> contract;
 
 	@DBRef
 	@NotNull

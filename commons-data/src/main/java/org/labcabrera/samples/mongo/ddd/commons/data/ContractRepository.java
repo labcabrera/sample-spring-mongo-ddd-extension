@@ -5,14 +5,11 @@ import java.util.Optional;
 
 import org.labcabrera.samples.mongo.ddd.commons.model.Contract;
 import org.labcabrera.samples.mongo.ddd.commons.model.QContract;
-import org.springframework.data.querydsl.QuerydslPredicateExecutor;
-import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.google.common.collect.ImmutableMap;
 import com.querydsl.core.types.Path;
 
-public interface ContractRepository
-	extends PagingAndSortingRepository<Contract, String>, QuerydslPredicateExecutor<Contract> {
+public interface ContractRepository<E> extends ApiRepository<Contract<E>> {
 
 	@SuppressWarnings("rawtypes")
 	Map<String, Path> PATH_MAP = ImmutableMap.<String, Path>builder() //@formatter:off
@@ -21,6 +18,6 @@ public interface ContractRepository
 		.put("effective", QContract.contract.effective)
 		.build(); //@formatter.on
 	
-	Optional<Contract> findByContractNumber(String contractNumber);
+	Optional<Contract<E>> findByContractNumber(String contractNumber);
 
 }

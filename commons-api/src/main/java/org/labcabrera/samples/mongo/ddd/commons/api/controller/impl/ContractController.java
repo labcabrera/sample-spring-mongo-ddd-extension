@@ -1,66 +1,34 @@
 package org.labcabrera.samples.mongo.ddd.commons.api.controller.impl;
 
-import java.util.Optional;
+public class ContractController { //<E> extends AbstractResourceController<Contract<E>, ContractResource<E>>
+//	implements ContractControllerDefinition<E> {
 
-import org.labcabrera.samples.mongo.ddd.commons.api.controller.ContractControllerDefinition;
-import org.labcabrera.samples.mongo.ddd.commons.api.errors.EntityNotFoundException;
-import org.labcabrera.samples.mongo.ddd.commons.api.hateoas.assemblers.ContractAssembler;
-import org.labcabrera.samples.mongo.ddd.commons.api.hateoas.resources.ContractResource;
-import org.labcabrera.samples.mongo.ddd.commons.api.querydsl.PredicateParser;
-import org.labcabrera.samples.mongo.ddd.commons.data.ContractRepository;
-import org.labcabrera.samples.mongo.ddd.commons.model.Contract;
-import org.labcabrera.samples.mongo.ddd.commons.service.ContractService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.PagedResources;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+//	public ContractController(ContractService<E> contractService) {
+//		super(service);
+//	}
 
-import com.querydsl.core.types.Predicate;
+//	@Override
+//	public ResponseEntity<ContractResource> findById(@PathVariable String id) {
+//		return super.findById(id);
+//	}
+//
+//	@Override
+//	public ResponseEntity<PagedResources<ContractResource>> find(
+//		@RequestParam(name = "search", required = false, defaultValue = "") String search,
+//		@ApiIgnore Pageable pageable) {
+//		return super.find(search, pageable);
+//	}
+//
+//	@Override
+//	public ResponseEntity<PagedResources<ContractResource>> findContractRelations(@PathVariable String policyId,
+//		@ApiIgnore Pageable pageable) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
-import springfox.documentation.annotations.ApiIgnore;
-
-public class ContractController implements ContractControllerDefinition {
-
-	@Autowired
-	private ContractService contractService;
-
-	@Autowired
-	private PagedResourcesAssembler<Contract> contractPagedAssembler;
-
-	@Autowired
-	private ContractAssembler contractAssembler;
-
-	@Autowired
-	private PredicateParser predicateParser;
-
-	@Override
-	public ResponseEntity<ContractResource> findById(@PathVariable String id) {
-		return contractService.findById(id).map(p -> ResponseEntity.ok(new ContractResource(p)))
-			.orElseThrow(() -> new EntityNotFoundException("Missing contract " + id));
-	}
-
-	@Override
-	public ResponseEntity<PagedResources<ContractResource>> find(
-		@RequestParam(name = "search", required = false, defaultValue = "") String search,
-		@ApiIgnore Pageable pageable) {
-		pageable = pageable != null ? pageable : PageRequest.of(0, 10, new Sort(Sort.Direction.ASC, "id"));
-		Optional<Predicate> predicate = predicateParser.buildPredicate(search, ContractRepository.PATH_MAP);
-		Page<Contract> page = predicate.isPresent() ? contractService.findAll(predicate.get(), pageable)
-			: contractService.findAll(pageable);
-		return ResponseEntity.ok(contractPagedAssembler.toResource(page, contractAssembler));
-	}
-
-	@Override
-	public ResponseEntity<PagedResources<ContractResource>> findContractRelations(@PathVariable String policyId,
-		@ApiIgnore Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	// @Override
+	// protected Map<String, Path> getEntityPaths() {
+	// return null;
+	// }
 
 }
