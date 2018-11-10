@@ -11,7 +11,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 @SpringBootApplication
-@EnableMongoRepositories(basePackages = "org.labcabrera.samples.mongo.ddd.commons.data")
+@EnableMongoRepositories(basePackages = { "org.labcabrera.samples.mongo.ddd.commons.data",
+	"org.labcabrera.samples.mongo.ddd.app.api.repositories" })
 @Import({ CommonsApiConfig.class, CommonsServiceConfig.class })
 public class ApiApplication implements CommandLineRunner {
 

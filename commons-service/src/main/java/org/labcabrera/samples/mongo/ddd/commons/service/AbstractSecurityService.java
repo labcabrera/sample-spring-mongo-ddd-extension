@@ -5,11 +5,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.labcabrera.samples.mongo.ddd.commons.data.ApiRepository;
 import org.labcabrera.samples.mongo.ddd.commons.model.security.HasAuthorization;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.querydsl.QuerydslPredicateExecutor;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -22,14 +21,15 @@ import com.querydsl.core.types.dsl.StringPath;
 
 public abstract class AbstractSecurityService<T extends HasAuthorization> {
 
+	protected final ApiRepository<T> repository;
+
+	public AbstractSecurityService(ApiRepository<T> repository) {
+		this.repository = repository;
+	}
+
 	protected abstract ListPath<String, StringPath> getAutorizationPaths();
 
-	protected abstract PagingAndSortingRepository<T, String> getPagedRepository();
-
-	protected abstract QuerydslPredicateExecutor<T> getQuerydslRepository();
-
 	public Optional<T> findById(String id) {
-		PagingAndSortingRepository<T, String> repository = getPagedRepository();
 		Optional<T> optional = repository.findById(id);
 		if (!optional.isPresent()) {
 			return optional;
@@ -55,11 +55,9 @@ public abstract class AbstractSecurityService<T extends HasAuthorization> {
 	public Page<T> findAll(Predicate predicate, Pageable pageable) {
 		Predicate newPredicate = compositePredicate(predicate);
 		if (newPredicate != null) {
-			QuerydslPredicateExecutor<T> repository = getQuerydslRepository();
 			return repository.findAll(newPredicate, pageable);
 		}
 		else {
-			PagingAndSortingRepository<T, String> repository = getPagedRepository();
 			return repository.findAll(pageable);
 		}
 	}
