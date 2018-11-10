@@ -10,10 +10,10 @@ import org.labcabrera.samples.mongo.ddd.commons.api.errors.EntityNotFoundExcepti
 import org.labcabrera.samples.mongo.ddd.commons.api.querydsl.PredicateParser;
 import org.labcabrera.samples.mongo.ddd.commons.api.resources.ContractCustomerRelationResource;
 import org.labcabrera.samples.mongo.ddd.commons.api.resources.ContractResource;
-import org.labcabrera.samples.mongo.ddd.commons.data.ContractRelationRepository;
 import org.labcabrera.samples.mongo.ddd.commons.data.ContractRepository;
 import org.labcabrera.samples.mongo.ddd.commons.model.Contract;
 import org.labcabrera.samples.mongo.ddd.commons.model.ContractCustomerRelation;
+import org.labcabrera.samples.mongo.ddd.commons.model.QContractCustomerRelation;
 import org.labcabrera.samples.mongo.ddd.commons.service.ContractRelationService;
 import org.labcabrera.samples.mongo.ddd.commons.service.ContractService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,13 +100,11 @@ public class ContractController implements
 	@Override
 	public ResponseEntity<PagedResources<ContractCustomerRelationResource<ContractAdditionalData, CustomerAdditionalData>>> findContractRelations(
 		@PathVariable("id") String id, @ApiIgnore Pageable pageable) {
-		String search = "contract.id==" + id;
 		pageable = pageable != null ? pageable : PageRequest.of(0, 10, new Sort(Sort.Direction.ASC, "id"));
-		Optional<Predicate> predicate = predicateParser.buildPredicate(search, ContractRelationRepository.PATH_MAP);
+		Predicate predicate = QContractCustomerRelation.contractCustomerRelation.contract.id.eq(id);
 		Page<ContractCustomerRelation<ContractAdditionalData, CustomerAdditionalData>> page = relationService
-			.findAll(predicate.get(), pageable);
+			.findAll(predicate, pageable);
 		return ResponseEntity.ok(relationPagedAssembler.toResource(page, relationAssembler));
-
 	}
 
 	@PostMapping
