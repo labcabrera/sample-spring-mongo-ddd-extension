@@ -14,23 +14,23 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class CustomerBasicTest {
 
 	@Autowired
-	private CustomerRepository<CustomerAdditionalData> repository;
+	private CustomerRepository<CustomerAD> repository;
 
 	@Test
 	public void test() {
-		Customer<CustomerAdditionalData> customer = new Customer<>();
+		Customer<CustomerAD> customer = new Customer<>();
 		customer.setName("Test");
-		customer.setAdditionalData(new CustomerAdditionalData());
+		customer.setAdditionalData(new CustomerAD());
 		customer.getAdditionalData().setCode("12345");
 
-		Customer<CustomerAdditionalData> saved = repository.save(customer);
+		Customer<CustomerAD> saved = repository.save(customer);
 
 		String id = saved.getId();
 		Assert.assertNotNull(id);
 		Assert.assertEquals(customer.getAdditionalData().getCode(), saved.getAdditionalData().getCode());
 
 		// TODO generics
-		Customer<CustomerAdditionalData> readed = repository.findById(id).get();
+		Customer<CustomerAD> readed = repository.findById(id).get();
 
 		Assert.assertEquals(customer.getAdditionalData().getCode(), readed.getAdditionalData().getCode());
 	}

@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import org.labcabrera.samples.mongo.ddd.app.model.ContractAdditionalData;
-import org.labcabrera.samples.mongo.ddd.app.model.CustomerAdditionalData;
+import org.labcabrera.samples.mongo.ddd.app.model.ContractAD;
+import org.labcabrera.samples.mongo.ddd.app.model.CustomerAD;
 import org.labcabrera.samples.mongo.ddd.app.model.Product;
 import org.labcabrera.samples.mongo.ddd.commons.data.ApiUserRepository;
 import org.labcabrera.samples.mongo.ddd.commons.data.ContractRelationRepository;
@@ -33,9 +33,9 @@ public class PopulatorService {
 
 	private final MongoOperations mongoOperations;
 	private final ApiUserRepository apiUserRepository;
-	private final CustomerRepository<CustomerAdditionalData> customerRepository;
-	private final ContractRepository<ContractAdditionalData> contractRepository;
-	private final ContractRelationRepository<ContractAdditionalData, CustomerAdditionalData> relationRepository;
+	private final CustomerRepository<CustomerAD> customerRepository;
+	private final ContractRepository<ContractAD> contractRepository;
+	private final ContractRelationRepository<ContractAD, CustomerAD> relationRepository;
 	private final ObjectMapper mapper;
 	private final PasswordEncoder passwordEncoder;
 
@@ -87,8 +87,8 @@ public class PopulatorService {
 		log.info("Populating customers");
 		try (InputStream in = Thread.currentThread().getContextClassLoader()
 			.getResourceAsStream("data/customers.json")) {
-			List<Customer<CustomerAdditionalData>> customers = mapper.readValue(in,
-				new TypeReference<List<Customer<CustomerAdditionalData>>>() {
+			List<Customer<CustomerAD>> customers = mapper.readValue(in,
+				new TypeReference<List<Customer<CustomerAD>>>() {
 				});
 			customerRepository.saveAll(customers);
 		}
@@ -104,8 +104,8 @@ public class PopulatorService {
 		log.info("Populating contracts");
 		try (InputStream in = Thread.currentThread().getContextClassLoader()
 			.getResourceAsStream("data/contracts.json")) {
-			List<Contract<ContractAdditionalData>> contracts = mapper.readValue(in,
-				new TypeReference<List<Contract<ContractAdditionalData>>>() {
+			List<Contract<ContractAD>> contracts = mapper.readValue(in,
+				new TypeReference<List<Contract<ContractAD>>>() {
 				});
 			contractRepository.saveAll(contracts);
 		}
@@ -121,14 +121,14 @@ public class PopulatorService {
 		log.info("Populating relations");
 		try (InputStream in = Thread.currentThread().getContextClassLoader()
 			.getResourceAsStream("data/relations.json")) {
-			List<ContractCustomerRelation<ContractAdditionalData, CustomerAdditionalData>> relations = mapper.readValue(
+			List<ContractCustomerRelation<ContractAD, CustomerAD>> relations = mapper.readValue(
 				in,
-				new TypeReference<List<ContractCustomerRelation<ContractAdditionalData, CustomerAdditionalData>>>() {
+				new TypeReference<List<ContractCustomerRelation<ContractAD, CustomerAD>>>() {
 				});
-			for (ContractCustomerRelation<ContractAdditionalData, CustomerAdditionalData> i : relations) {
-				Contract<ContractAdditionalData> contract = contractRepository
+			for (ContractCustomerRelation<ContractAD, CustomerAD> i : relations) {
+				Contract<ContractAD> contract = contractRepository
 					.findByContractNumber(i.getContract().getContractNumber()).get();
-				Customer<CustomerAdditionalData> customer = customerRepository
+				Customer<CustomerAD> customer = customerRepository
 					.findByIdCardNumber(i.getCustomer().getIdCard().getNumber()).get();
 				i.setContract(contract);
 				i.setCustomer(customer);
