@@ -1,33 +1,24 @@
 buildscript {
 	ext {
-		springBootVersion            = '2.1.0.RELEASE'
 		springfoxSwaggerVersion      = '2.9.2'
 		swaggerAnnotationsVersion    = '1.5.21'
 		jsonwebtokenVersion          = '0.9.1'
 		rsqlQuerydslVersion          = '2.0.0.RELEASE'
-		// Plugins
-		palantirPluginVersion        = '0.20.1'
-		querydslPluginVersion        = '1.0.10'
-	}
-	repositories {
-		mavenCentral()
-		maven {
-			url "https://plugins.gradle.org/m2/"
-		}
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-		classpath("gradle.plugin.com.palantir.gradle.docker:gradle-docker:${palantirPluginVersion}")
-		classpath("gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:${querydslPluginVersion}")
 	}
 }
 
+plugins {
+	id 'java-library'
+	id 'maven-publish'
+	id 'org.springframework.boot'           version '2.1.0.RELEASE'  apply false
+	id "com.ewerk.gradle.plugins.querydsl"  version "1.0.10"         apply false
+	id 'com.palantir.docker'                version '0.20.1'         apply false
+}
+
 subprojects {
-	apply plugin: 'java'
-	apply plugin: 'eclipse'
-	apply plugin: 'org.springframework.boot'
-	apply plugin: 'io.spring.dependency-management'
+	apply plugin: 'java-library'
 	apply plugin: 'maven-publish'
+	apply plugin: 'io.spring.dependency-management'
 
 	group = 'org.labcabrera.samples.mongo.ddd'
 	version = version
@@ -62,51 +53,42 @@ project(":commons-model") {
 
 project(":commons-data") {
 	dependencies {
-		implementation(project(':commons-model')) { transitive = false }
-		implementation('org.springframework.boot:spring-boot-starter-data-mongodb')
-		implementation('com.querydsl:querydsl-mongodb')
+		api(project(':commons-model')) { transitive = false }
+		api('org.springframework.boot:spring-boot-starter-data-mongodb')
+		api('com.querydsl:querydsl-mongodb')
 		compileOnly('org.projectlombok:lombok')
 	}
 }
 
 project(":commons-service") {
 	dependencies {
-		implementation(project(':commons-model')) { transitive = false }
-		implementation(project(':commons-data'))
-		implementation('org.springframework.boot:spring-boot-starter-data-mongodb')
-		implementation('org.springframework.boot:spring-boot-starter-security')
-		implementation('com.querydsl:querydsl-mongodb')
+		api(project(':commons-data'))
+		api('org.springframework.boot:spring-boot-starter-security')
 		compileOnly('org.projectlombok:lombok')
 	}
 }
 
 project(":commons-api") {
 	dependencies {
-		implementation(project(':commons-model')) { transitive = false }
-		implementation(project(':commons-data'))
-		implementation(project(':commons-service'))
-		implementation('org.springframework.boot:spring-boot-starter-data-mongodb')
-		implementation('org.springframework.boot:spring-boot-starter-security')
-		implementation('org.springframework.boot:spring-boot-starter-hateoas')
-		implementation('org.springframework.boot:spring-boot-starter-web')
-		implementation('com.querydsl:querydsl-mongodb')
-		implementation("com.github.vineey:rsql-querydsl-all:${rsqlQuerydslVersion}")
-		implementation("io.springfox:springfox-swagger2:${springfoxSwaggerVersion}")
-		implementation("io.springfox:springfox-swagger-ui:${springfoxSwaggerVersion}")
+		api(project(':commons-service'))
+		api('org.springframework.boot:spring-boot-starter-hateoas')
+		api('org.springframework.boot:spring-boot-starter-web')
+		api("com.github.vineey:rsql-querydsl-all:${rsqlQuerydslVersion}")
+		api("io.springfox:springfox-swagger2:${springfoxSwaggerVersion}")
+		api("io.springfox:springfox-swagger-ui:${springfoxSwaggerVersion}")
 		compileOnly('org.projectlombok:lombok')
 	}
 }
 
 project(":commons-security") {
 	dependencies {
-		implementation(project(':commons-data'))
-		implementation('org.springframework.boot:spring-boot-starter-security')
-		implementation('org.springframework.boot:spring-boot-starter-web')
-		implementation("io.jsonwebtoken:jjwt:${jsonwebtokenVersion}")
+		api(project(':commons-data'))
+		api('org.springframework.boot:spring-boot-starter-web')
+		api('org.springframework.boot:spring-boot-starter-security')
+		api("io.jsonwebtoken:jjwt:${jsonwebtokenVersion}")
 		compileOnly('org.projectlombok:lombok')
 	}
 }
-
 
 project(":app-model") {
 	apply plugin: "com.ewerk.gradle.plugins.querydsl"
@@ -127,42 +109,26 @@ project(":app-model") {
 }
 
 project(":app-api") {
+	apply plugin: 'org.springframework.boot'
 	apply plugin: 'com.palantir.docker'
 	dependencies {
-		implementation(project(':commons-model')) { transitive = false }
-		implementation(project(':commons-data'))
-		implementation(project(':commons-service'))
 		implementation(project(':commons-api'))
 		implementation(project(':commons-security'))
 		implementation(project(':app-model'))
-		implementation('org.springframework.boot:spring-boot-starter-data-mongodb')
-		implementation('org.springframework.boot:spring-boot-starter-web')
-		implementation('org.springframework.boot:spring-boot-starter-hateoas')
 		implementation('org.springframework.boot:spring-boot-starter-actuator')
-		implementation('com.querydsl:querydsl-mongodb')
-		implementation("com.github.vineey:rsql-querydsl-all:${rsqlQuerydslVersion}")
-		implementation("io.springfox:springfox-swagger2:${springfoxSwaggerVersion}")
-		implementation("io.springfox:springfox-swagger-ui:${springfoxSwaggerVersion}")
-		implementation('org.projectlombok:lombok')
+		api('org.projectlombok:lombok')
 	}
 }
 
-/**
-  * Configuramos los proyectos que son librerias en lugar de microservicios para su publicacion en
-  * el repositorio. Tambien habilitamos la generacion del jar no ejecutable (en lugar de utilizar
-  * el plugin de resolucion de dependencias directamente usamos el de spring boot).
-  */
-configure(subprojects.findAll { !it.name.startsWith("app-api") }) {
+configure(subprojects.findAll { it.name != "app-api" }) {
+	dependencyManagement {
+		imports {
+			mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+		}
+	}
 	task sourcesJar(type: Jar) {
 		from sourceSets.main.allJava
 		classifier = 'sources'
-	}
-	jar {
-		enabled = true
-	}
-	bootJar {
-		classifier = 'boot'
-		mainClassName = 'org.labcabrera.dummy.Dummy'
 	}
 	publishing {
 		publications {
